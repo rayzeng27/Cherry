@@ -10,7 +10,7 @@ export class CapitalFlowRecordService
 
   query():CapitalFlowRecord[]
   {
-    let cfRecords : CapitalFlowRecord[] = new CapitalFlowRecord[2];
+    let cfRecords : CapitalFlowRecord[] = [];
     cfRecords[0] = new CapitalFlowRecord();
     cfRecords[0].id = 1;
     cfRecords[0].groupId = 0;
