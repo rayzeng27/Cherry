@@ -1,3 +1,5 @@
+import { EnumInExType } from "../enum/EnumInExType";
+
 export class CapitalFlowRecord {
     id:number;
     groupId:number;
@@ -13,7 +15,7 @@ export class CapitalFlowRecord {
     foreignCurrencyId:number;
     exchangeRate:number;
     ownerId:number;
-    inExType:string;
+    inExType:EnumInExType;
     inExCategoryId:number;
     remark:string;
 }

@@ -8,6 +8,9 @@
         <span>Datetime</span>
       </th>
       <th nz-th>
+        <span>InExType</span>
+      </th>
+      <th nz-th>
         <span>Remark</span>
       </th>
     </tr>
@@ -16,6 +19,7 @@
     <tr nz-tbody-tr *ngFor="let cfRecord of nzTable.data">
       <td nz-td>{{cfRecord.localMoney}}</td>
       <td nz-td>{{cfRecord.recordDateTime}}</td>
+      <td nz-td>{{cfRecord.inExType}}</td>
       <td nz-td>{{cfRecord.remark}}</td>
     </tr>
   </tbody>

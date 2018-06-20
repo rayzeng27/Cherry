@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { CapitalFlowRecord } from '../entity/CapitalFlowRecord';
+import { EnumInExType } from '../enum/EnumInExType';
 
 @Injectable()
 export class CapitalFlowRecordService
@@ -26,7 +27,7 @@ export class CapitalFlowRecordService
     cfRecords[0].foreignCurrencyId = 0;
     cfRecords[0].exchangeRate = 1;
     cfRecords[0].ownerId = 0;
-    cfRecords[0].inExType = "income";
+    cfRecords[0].inExType = EnumInExType.INCOME;
     cfRecords[0].inExCategoryId = 123;
     cfRecords[0].remark = "注释1";
     
@@ -45,7 +46,7 @@ export class CapitalFlowRecordService
     cfRecords[1].foreignCurrencyId = 0;
     cfRecords[1].exchangeRate = 1;
     cfRecords[1].ownerId = 0;
-    cfRecords[1].inExType = "expense";
+    cfRecords[1].inExType = EnumInExType.EXPENSES;
     cfRecords[1].inExCategoryId = 222;
     cfRecords[1].remark = "注释2";
     
