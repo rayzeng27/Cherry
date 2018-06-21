@@ -1,16 +1,11 @@
-export class Account
+export class Person
 {
     id:number;
-    groupId:number;
-    issuerId:number;
-    ownerId:number;
     name:string;
-    status:string;
-    currencyId:number;
+    host:boolean;
     autoIndexEnable:boolean;
     pinyin:string;
     acronym:string;
     createDateTime:string;
     lastOperDateTime:string;
-    remark:string;
 }

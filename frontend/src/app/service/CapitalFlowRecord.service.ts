@@ -5,10 +5,6 @@ import { EnumInExType } from '../enum/EnumInExType';
 @Injectable()
 export class CapitalFlowRecordService
 {
-  constructor() 
-  {
-  }
-
   query():CapitalFlowRecord[]
   {
     let cfRecords : CapitalFlowRecord[] = [];

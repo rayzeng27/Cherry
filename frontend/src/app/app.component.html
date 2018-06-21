@@ -1,26 +1,16 @@
 <nz-table #nzTable [nzData]="cfRecords" [nzShowPagination]="false">
-  <thead nz-thead>
+  <theadead>
     <tr>
-      <th nz-th>
-        <span>Money</span>
-      </th>
-      <th nz-th>
-        <span>Datetime</span>
-      </th>
-      <th nz-th>
-        <span>InExType</span>
-      </th>
-      <th nz-th>
-        <span>Remark</span>
-      </th>
+      <th>Date</th>
+      <th>Account(s)/Category</th>
+      <th>Money</th>
     </tr>
   </thead>
-  <tbody nz-tbody>
-    <tr nz-tbody-tr *ngFor="let cfRecord of nzTable.data">
-      <td nz-td>{{cfRecord.localMoney}}</td>
-      <td nz-td>{{cfRecord.recordDateTime}}</td>
-      <td nz-td>{{cfRecord.inExType}}</td>
-      <td nz-td>{{cfRecord.remark}}</td>
+  <tbody>
+    <tr *ngFor="let cfRecord of nzTable.data">
+      <td>{{cfRecord.recordDateTime}}</td>
+      <td>{{cfRecord.inExCategoryId}}</td>
+      <td>{{cfRecord.localMoney}}</td>
     </tr>
   </tbody>
 </nz-table>

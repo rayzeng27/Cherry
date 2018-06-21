@@ -1,6 +1,7 @@
 import { EnumInExType } from "../enum/EnumInExType";
 
-export class CapitalFlowRecord {
+export class CapitalFlowRecord 
+{
     id:number;
     groupId:number;
     groupFlag:boolean;
@@ -18,4 +19,14 @@ export class CapitalFlowRecord {
     inExType:EnumInExType;
     inExCategoryId:number;
     remark:string;
+}
+
+export class CapitalFlowRecordViewObject
+{
+    record:CapitalFlowRecord;
+    flowOutAccountName:string;
+    flowInAccountName:string;
+    ownerName:string;
+    inExCategoryName:string;
+    tagsName:string[];
 }

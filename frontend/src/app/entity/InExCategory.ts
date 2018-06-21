@@ -1,12 +1,11 @@
-export class Account
+import { EnumInExType } from "../enum/EnumInExType";
+
+export class InExCategory
 {
     id:number;
     groupId:number;
-    issuerId:number;
-    ownerId:number;
     name:string;
-    status:string;
-    currencyId:number;
+    inExType:EnumInExType;
     autoIndexEnable:boolean;
     pinyin:string;
     acronym:string;
