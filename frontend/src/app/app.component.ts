@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { CapitalFlowRecord } from './entity/CapitalFlowRecord';
+import { CapitalFlowRecordViewObject } from './entity/CapitalFlowRecord.entity';
 import { CapitalFlowRecordService } from './service/CapitalFlowRecord.service';
+import { EnumInExType } from './enum/InExType.enum';
 
 @Component({
   selector: 'app-root',
@@ -9,7 +10,10 @@ import { CapitalFlowRecordService } from './service/CapitalFlowRecord.service';
 })
 export class AppComponent implements OnInit
 {
-  cfRecords: CapitalFlowRecord[];
+  // 此变量是为了能在html里引用枚举
+  EnumInExType = EnumInExType;
+
+  cfRecordVOs: CapitalFlowRecordViewObject[];
 
   constructor(private cfRecordService: CapitalFlowRecordService) 
   {
@@ -17,6 +21,6 @@ export class AppComponent implements OnInit
 
   ngOnInit() 
   {
-    this.cfRecords = this.cfRecordService.query();
+    this.cfRecordVOs = this.cfRecordService.query();
   }
 }

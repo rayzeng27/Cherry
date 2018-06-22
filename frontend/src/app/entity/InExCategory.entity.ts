@@ -1,4 +1,4 @@
-import { EnumInExType } from "../enum/EnumInExType";
+import { EnumInExType } from "../enum/InExType.enum";
 
 export class InExCategory
 {

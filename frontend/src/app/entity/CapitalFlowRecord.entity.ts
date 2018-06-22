@@ -1,5 +1,8 @@
-import { EnumInExType } from "../enum/EnumInExType";
+import { EnumInExType } from "../enum/InExType.enum";
 
+/**
+ * 所有字段和后端的entity保持一致，用于跟后端交互
+ */
 export class CapitalFlowRecord 
 {
     id:number;
@@ -21,12 +24,14 @@ export class CapitalFlowRecord
     remark:string;
 }
 
-export class CapitalFlowRecordViewObject
+/**
+ * 在CapitalFlowRecord的基础上添加界面显示需要的字段
+ */
+export class CapitalFlowRecordViewObject extends CapitalFlowRecord
 {
-    record:CapitalFlowRecord;
     flowOutAccountName:string;
     flowInAccountName:string;
     ownerName:string;
     inExCategoryName:string;
-    tagsName:string[];
+    tagsName:string;
 }
