@@ -9,12 +9,14 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { registerLocaleData } from '@angular/common';
 import en from '@angular/common/locales/en';
+import { CfRcordDetailComponent } from './component/cfrecord-detail/cfrecord-detail.component';
 
 registerLocaleData(en);
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    CfRcordDetailComponent
   ],
   imports: [
     BrowserModule,
@@ -25,6 +27,6 @@ registerLocaleData(en);
     NgZorroAntdModule
   ],
   providers: [CapitalFlowRecordService, { provide: NZ_I18N, useValue: en_US }],
-  bootstrap: [AppComponent]
+  bootstrap: [CfRcordDetailComponent]
 })
 export class AppModule { }

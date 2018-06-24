@@ -1,26 +1,20 @@
 <nz-table #nzTable [nzData]="cfRecordVOs" [nzShowPagination]="false">
-  <thead>
-    <tr>
-      <th nzShowExpand></th>
-      <th class="align-center">Date</th>
-      <th class="align-center">Account(s)/Category</th>
-      <th class="align-right">Money</th>
-    </tr>
-  </thead>
   <tbody>
     <ng-template ngFor let-cfRecordVO [ngForOf]="nzTable.data">
-      <tr [ngSwitch]="cfRecordVO.inExType"
-          [ngClass]="{'row-income' : cfRecordVO.inExType == EnumInExType.INCOME, 'row-expenses' : cfRecordVO.inExType == EnumInExType.EXPENSES}">
-        <td nzShowExpand [(nzExpand)]="cfRecordVO.expand" class="thin-padding"></td>
-        <td class="align-center thin-padding">{{cfRecordVO.recordDateTime | date:'yyyy-MM-dd'}}</td>
-        <td *ngSwitchCase="EnumInExType.INCOME"   class="thin-padding"><span class="account">{{cfRecordVO.flowInAccountName}} : {{cfRecordVO.inExCategoryName}}</span></td>
-        <td *ngSwitchCase="EnumInExType.EXPENSES" class="thin-padding"><span class="account">{{cfRecordVO.flowOutAccountName}} : {{cfRecordVO.inExCategoryName}}</span></td>
-        <td *ngSwitchCase="EnumInExType.NONE"     class="thin-padding"><span class="account">{{cfRecordVO.flowOutAccountName}} -> {{cfRecordVO.flowInAccountName}}</span></td>
-        <td class="align-right thin-padding money">{{cfRecordVO.localMoney | number:'1.2-2'}}</td>
-      </tr>
-      <tr [nzExpand]="cfRecordVO.expand">
-        <td></td>
-        <td colspan="4">{{cfRecordVO.remark}}</td>
+      <tr [ngClass]="{'row-income' : cfRecordVO.inExType == EnumInExType.INCOME, 'row-expenses' : cfRecordVO.inExType == EnumInExType.EXPENSES}">
+        <td class="thin-padding">
+          <table>
+            <tr>
+              <td style="padding:0px 3px; border:none;">{{cfRecordVO.recordDateTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+              <td style="padding:0px 3px; border:none;" class="align-right money" rowspan="2">{{cfRecordVO.localMoney | number:'1.2-2'}}</td>
+            </tr>
+            <tr [ngSwitch]="cfRecordVO.inExType">
+              <td *ngSwitchCase="EnumInExType.INCOME"   style="padding:0px 3px; border:none;"><span class="account">{{cfRecordVO.flowInAccountName}} : {{cfRecordVO.inExCategoryName}}</span></td>
+              <td *ngSwitchCase="EnumInExType.EXPENSES" style="padding:0px 3px; border:none;"><span class="account">{{cfRecordVO.flowOutAccountName}} : {{cfRecordVO.inExCategoryName}}</span></td>
+              <td *ngSwitchCase="EnumInExType.NONE"     style="padding:0px 3px; border:none;"><span class="account">{{cfRecordVO.flowOutAccountName}} -> {{cfRecordVO.flowInAccountName}}</span></td>
+            </tr>
+          </table>
+        </td>
       </tr>
   </ng-template>
   </tbody>

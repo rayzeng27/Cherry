@@ -1,0 +1,67 @@
+<div [ngSwitch]="cfRecordVO.inExType">
+  <div nz-row>
+    <div nz-col nzSpan="24" class="big-money">{{cfRecordVO.localMoney | number:'1.2-2'}}</div>
+  </div>
+  <div nz-row *ngSwitchCase="EnumInExType.INCOME">
+    <div nz-col nzSpan="12">
+      <div class="small-label">收入账户</div>
+      <div class="big-value">{{cfRecordVO.flowInAccountName}}</div>
+    </div>
+    <div nz-col nzSpan="12">
+      <div class="small-label">收入分类</div>
+      <div class="big-value">{{cfRecordVO.inExCategoryName}}</div>
+    </div>
+  </div>
+  <div nz-row *ngSwitchCase="EnumInExType.EXPENSES">
+    <div nz-col nzSpan="12">
+      <div class="small-label">支出账户</div>
+      <div class="big-value">{{cfRecordVO.flowOutAccountName}}</div>
+    </div>
+    <div nz-col nzSpan="12">
+      <div class="small-label">支出分类</div>
+      <div class="big-value">{{cfRecordVO.inExCategoryName}}</div>
+    </div>
+  </div>
+  <div nz-row *ngSwitchCase="EnumInExType.NONE">
+    <div nz-col nzSpan="12">
+      <div class="small-label">转出账户</div>
+      <div class="big-value">{{cfRecordVO.flowOutAccountName}}</div>
+    </div>
+    <div nz-col nzSpan="12">
+      <div class="small-label">转入账户</div>
+      <div class="big-value">{{cfRecordVO.flowInAccountName}}</div>
+    </div>
+  </div>
+  <div nz-row *ngSwitchCase="EnumInExType.NONE">
+    <div nz-col nzSpan="12">
+      <div class="small-label">转出操作</div>
+      <div class="big-value">无名1</div>
+    </div>
+    <div nz-col nzSpan="12">
+      <div class="small-label">转入操作</div>
+      <div class="big-value">无名2</div>
+    </div>
+  </div>
+  <div nz-row>
+    <div nz-col nzSpan="12">
+      <div class="small-label">日期</div>
+      <div class="big-value">{{cfRecordVO.recordDateTime | date:'yyyy-MM-dd HH:mm:ss'}}</div>
+    </div>
+    <div nz-col nzSpan="12">
+      <div class="small-label">归属人员</div>
+      <div class="big-value">{{cfRecordVO.ownerName}}</div>
+    </div>
+  </div>
+  <div nz-row>
+    <div nz-col nzSpan="24">
+      <div class="small-label">标签</div>
+      <div class="big-value">无</div>
+    </div>
+  </div>
+  <div nz-row>
+    <div nz-col nzSpan="24">
+      <div class="small-label">备注</div>
+      <div class="big-value">{{cfRecordVO.remark}}</div>
+    </div>
+  </div>
+</div>
