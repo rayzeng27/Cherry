@@ -1,0 +1,6 @@
+{
+  "/ef" : {
+    "target" : "http://localhost:8221",
+    "secure" : false
+  }
+}

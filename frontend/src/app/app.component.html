@@ -7,11 +7,12 @@
             <tr>
               <td style="padding:0px 3px; border:none;">{{cfRecordVO.recordDateTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
               <td style="padding:0px 3px; border:none;" class="align-right money" rowspan="2">{{cfRecordVO.localMoney | number:'1.2-2'}}</td>
+              <td style="padding:0px 3px; border:none; width:24px; font-size:20px;" rowspan="2"><i class="anticon anticon-right-circle-o"></i></td>
             </tr>
             <tr [ngSwitch]="cfRecordVO.inExType">
-              <td *ngSwitchCase="EnumInExType.INCOME"   style="padding:0px 3px; border:none;"><span class="account">{{cfRecordVO.flowInAccountName}} : {{cfRecordVO.inExCategoryName}}</span></td>
-              <td *ngSwitchCase="EnumInExType.EXPENSES" style="padding:0px 3px; border:none;"><span class="account">{{cfRecordVO.flowOutAccountName}} : {{cfRecordVO.inExCategoryName}}</span></td>
-              <td *ngSwitchCase="EnumInExType.NONE"     style="padding:0px 3px; border:none;"><span class="account">{{cfRecordVO.flowOutAccountName}} -> {{cfRecordVO.flowInAccountName}}</span></td>
+              <td *ngSwitchCase="EnumInExType.INCOME"   style="padding:0px 3px; border:none;"><span class="account">{{cfRecordVO.flowInAccountName}}  <nz-tag [nzColor]="'green'">{{cfRecordVO.inExCategoryName}}</nz-tag></span></td>
+              <td *ngSwitchCase="EnumInExType.EXPENSES" style="padding:0px 3px; border:none;"><span class="account">{{cfRecordVO.flowOutAccountName}} <nz-tag [nzColor]="'red'">{{cfRecordVO.inExCategoryName}}</nz-tag></span></td>
+              <td *ngSwitchCase="EnumInExType.NONE"     style="padding:0px 3px; border:none;"><span class="account">{{cfRecordVO.flowOutAccountName}} <i class="anticon anticon-arrow-right"></i> {{cfRecordVO.flowInAccountName}}</span></td>
             </tr>
           </table>
         </td>
