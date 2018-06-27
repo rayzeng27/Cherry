@@ -27,6 +27,6 @@ registerLocaleData(en);
     NgZorroAntdModule
   ],
   providers: [CapitalFlowRecordService, { provide: NZ_I18N, useValue: en_US }],
-  bootstrap: [CfRcordDetailComponent]
+  bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -21,6 +21,6 @@ export class AppComponent implements OnInit
 
   ngOnInit() 
   {
-    this.cfRecordVOs = this.cfRecordService.query();
+    this.cfRecordService.query().subscribe(cfRecordVOs => this.cfRecordVOs = cfRecordVOs);;
   }
 }
