@@ -1,10 +1,34 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { InExCategory } from '../entity/InExCategory.entity';
+import { EnumInExType } from '../enum/InExType.enum';
 
 @Injectable()
 export class InExCategoryService
 {
-    public getCategoryName (categoryId : number) : string
+    private incomeCategoryMap : Map<number, InExCategory> = new Map();
+
+    private expensesCategoryMap : Map<number, InExCategory> = new Map();
+
+    constructor(private http: HttpClient) 
     {
-        return "测试分类";
+        this.http.get<InExCategory[]>("ef/inexcategories")
+        .subscribe(categories => {
+            categories.forEach(category => {
+                switch(category.inExType)
+                {
+                    case EnumInExType.INCOME:
+                    {
+                        this.incomeCategoryMap.set(category.id, category);
+                        break;
+                    }
+                    case EnumInExType.EXPENSES:
+                    {
+                        this.expensesCategoryMap.set(category.id, category);
+                        break;
+                    }
+                }
+            })
+        });
     }
 }

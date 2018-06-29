@@ -8,7 +8,7 @@ export class CapitalFlowRecord
     id:number;
     groupId:number;
     groupFlag:boolean;
-    recordDateTime:string;
+    recordDateTime:Date;
     lastOperDateTime:string;
     flowOutAccountId:number;
     flowOutOperationId:string;

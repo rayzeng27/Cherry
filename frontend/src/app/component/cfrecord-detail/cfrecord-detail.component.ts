@@ -20,7 +20,7 @@ export class CfRcordDetailComponent implements OnInit
     this.cfRecordVO.id = 2;
     this.cfRecordVO.groupId = 0;
     this.cfRecordVO.groupFlag = false;
-    this.cfRecordVO.recordDateTime = "201806201913";
+    this.cfRecordVO.recordDateTime = new Date();
     this.cfRecordVO.lastOperDateTime = "201806201913";
     this.cfRecordVO.flowOutAccountId = 145;
     this.cfRecordVO.flowOutOperationId = "cash";

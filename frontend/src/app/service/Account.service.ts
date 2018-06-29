@@ -1,11 +1,15 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { Account } from '../entity/Account.entity';
 
 @Injectable()
 export class AccountService
 {
-    public getAccountName (accountId : number) : string
+    private map : Map<number, Account> = new Map();
+
+    constructor(private http: HttpClient) 
     {
-        return "测试账户";
+        this.http.get<Account[]>("ef/accounts")
+        .subscribe(accounts => accounts.forEach(account => this.map.set(account.id, account)));
     }
 }
