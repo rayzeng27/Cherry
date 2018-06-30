@@ -6,7 +6,7 @@ import { catchError, map, tap } from 'rxjs/operators';
 import { CapitalFlowRecordViewObject } from '../entity/CapitalFlowRecord.entity';
 import { EnumInExType } from '../enum/InExType.enum';
 
-@Injectable()
+@Injectable({providedIn : 'root'})
 export class CapitalFlowRecordService
 {
     constructor(private http: HttpClient)

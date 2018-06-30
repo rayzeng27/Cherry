@@ -2,18 +2,24 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { InExCategory } from '../entity/InExCategory.entity';
 import { EnumInExType } from '../enum/InExType.enum';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
-@Injectable()
+@Injectable({providedIn : 'root'})
 export class InExCategoryService
 {
     private incomeCategoryMap : Map<number, InExCategory> = new Map();
 
     private expensesCategoryMap : Map<number, InExCategory> = new Map();
 
-    constructor(private http: HttpClient) 
+    constructor(private http: HttpClient)
     {
-        this.http.get<InExCategory[]>("ef/inexcategories")
-        .subscribe(categories => {
+    }
+
+    public init() : Observable<Boolean>
+    {
+       return this.http.get<InExCategory[]>("ef/inexcategories").pipe(
+        map(categories => {
             categories.forEach(category => {
                 switch(category.inExType)
                 {
@@ -28,7 +34,10 @@ export class InExCategoryService
                         break;
                     }
                 }
-            })
-        });
+            });
+
+            return true;
+        })
+       );
     }
 }

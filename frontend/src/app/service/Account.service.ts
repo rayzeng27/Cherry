@@ -1,15 +1,28 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Account } from '../entity/Account.entity';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
-@Injectable()
+@Injectable({providedIn : 'root'})
 export class AccountService
 {
-    private map : Map<number, Account> = new Map();
+    private accountMap : Map<number, Account> = new Map();
 
-    constructor(private http: HttpClient) 
+    constructor(private http: HttpClient)
     {
-        this.http.get<Account[]>("ef/accounts")
-        .subscribe(accounts => accounts.forEach(account => this.map.set(account.id, account)));
+    }
+
+    public init() : Observable<Boolean>
+    {
+       return this.http.get<Account[]>("ef/accounts").pipe(
+        map(accounts => {
+            accounts.forEach(account => {
+                this.accountMap.set(account.id, account);
+            });
+            
+            return true;
+        })
+       );
     }
 }

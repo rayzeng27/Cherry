@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { NgZorroAntdModule, NZ_I18N, en_US } from 'ng-zorro-antd';
 
 import { AppComponent } from './app.component';
@@ -10,23 +10,32 @@ import { HttpClientModule } from '@angular/common/http';
 import { registerLocaleData } from '@angular/common';
 import en from '@angular/common/locales/en';
 import { CfRcordDetailComponent } from './component/cfrecord-detail/cfrecord-detail.component';
+import { StartupService } from './service/startup.service';
 
 registerLocaleData(en);
 
+export function AppInitializerFactory(startupService: StartupService): Function 
+{
+    return () => startupService.startup();
+}
+
 @NgModule({
-  declarations: [
-    AppComponent,
-    CfRcordDetailComponent
-  ],
-  imports: [
-    BrowserModule,
-    NgZorroAntdModule.forRoot(),
-    BrowserAnimationsModule,
-    FormsModule,
-    HttpClientModule,
-    NgZorroAntdModule
-  ],
-  providers: [CapitalFlowRecordService, { provide: NZ_I18N, useValue: en_US }],
-  bootstrap: [AppComponent]
+    declarations: [
+        AppComponent,
+        CfRcordDetailComponent
+    ],
+    imports: [
+        BrowserModule,
+        NgZorroAntdModule.forRoot(),
+        BrowserAnimationsModule,
+        FormsModule,
+        HttpClientModule,
+        NgZorroAntdModule
+    ],
+    providers: [
+        { provide: APP_INITIALIZER, useFactory: AppInitializerFactory, deps: [StartupService], multi: true },
+        { provide: NZ_I18N, useValue: en_US }
+    ],
+    bootstrap: [AppComponent]
 })
 export class AppModule { }
