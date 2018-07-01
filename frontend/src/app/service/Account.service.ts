@@ -25,4 +25,11 @@ export class AccountService
         })
        );
     }
+
+    public getAccount(id : number) : Account
+    {
+        let account = this.accountMap.get(id);
+
+        return account;
+    }
 }

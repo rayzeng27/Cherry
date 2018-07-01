@@ -1,8 +1,7 @@
-export class Person
+export class Tag
 {
     id : number;
     name : string;
-    host : boolean;
     pinyin : string;
     acronym : string;
 }

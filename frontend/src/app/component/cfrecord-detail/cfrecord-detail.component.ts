@@ -39,6 +39,5 @@ export class CfRcordDetailComponent implements OnInit
     this.cfRecordVO.flowInAccountName = "[小明]招行白金信用卡";
     this.cfRecordVO.inExCategoryName = "";
     this.cfRecordVO.ownerName = "小李";
-    this.cfRecordVO.tagsName = "";
   }
 }

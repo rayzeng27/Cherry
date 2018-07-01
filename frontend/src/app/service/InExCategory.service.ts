@@ -40,4 +40,21 @@ export class InExCategoryService
         })
        );
     }
+
+    public getInExCategory(inExType : EnumInExType, id : number) : InExCategory
+    {
+        switch(inExType)
+        {
+            case EnumInExType.INCOME:
+            {
+                return this.incomeCategoryMap.get(id);
+            }
+            case EnumInExType.EXPENSES:
+            {
+                return this.expensesCategoryMap.get(id);
+            }
+        }
+
+        return null;
+    }
 }

@@ -5,11 +5,19 @@ import { Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 import { CapitalFlowRecordViewObject } from '../entity/CapitalFlowRecord.entity';
 import { EnumInExType } from '../enum/InExType.enum';
+import { AccountService } from './Account.service';
+import { InExCategoryService } from './InExCategory.service';
+import { PersonService } from './Person.service';
+import { TagService } from './Tag.service';
 
 @Injectable({providedIn : 'root'})
 export class CapitalFlowRecordService
 {
-    constructor(private http: HttpClient)
+    constructor(private http: HttpClient,
+                private accountService : AccountService,
+                private inExCategoryService : InExCategoryService,
+                private personService : PersonService,
+                private tagService : TagService)
     {
     }
 
@@ -18,7 +26,7 @@ export class CapitalFlowRecordService
         return this.http.get<CapitalFlowRecordViewObject[]>("ef/cfrecords")
         .pipe(
             map(cfRecordVOs => {
-                cfRecordVOs.forEach(this.fillingInformation); 
+                cfRecordVOs.forEach(cfRecordVO => this.fillingInformation(cfRecordVO)); 
                 return cfRecordVOs;
             }),
             catchError(this.handleError<CapitalFlowRecordViewObject[]>('query', []))
@@ -109,26 +117,54 @@ export class CapitalFlowRecordService
      */
     private fillingInformation(cfRecordVO : CapitalFlowRecordViewObject) : void
     {
+        // account and inExCategory
         switch(cfRecordVO.inExType)
         {
             case EnumInExType.INCOME:
             {
-                cfRecordVO.flowInAccountName ="AAA";
-                cfRecordVO.inExCategoryName = "III";
+                let account = this.accountService.getAccount(cfRecordVO.flowInAccountId);
+                cfRecordVO.flowInAccountName = account.name;
+
+                let inExCategory = this.inExCategoryService.getInExCategory(EnumInExType.INCOME, cfRecordVO.inExCategoryId);
+                cfRecordVO.inExCategoryName = inExCategory.name;
                 break;
             }
             case EnumInExType.EXPENSES:
             {
-                cfRecordVO.flowOutAccountName ="BBB";
-                cfRecordVO.inExCategoryName = "III";
+                let account = this.accountService.getAccount(cfRecordVO.flowOutAccountId);
+                cfRecordVO.flowOutAccountName = account.name;
+                
+                let inExCategory = this.inExCategoryService.getInExCategory(EnumInExType.EXPENSES, cfRecordVO.inExCategoryId);
+                cfRecordVO.inExCategoryName = inExCategory.name;
                 break;
             }
             case EnumInExType.NONE:
             {
-                cfRecordVO.flowInAccountName ="CCC";
-                cfRecordVO.flowOutAccountName ="DDD";
+                let inAccount = this.accountService.getAccount(cfRecordVO.flowInAccountId);
+                let outAccount = this.accountService.getAccount(cfRecordVO.flowOutAccountId);
+
+                cfRecordVO.flowInAccountName = inAccount.name;
+                cfRecordVO.flowOutAccountName = outAccount.name;
                 break;
             }
+        }
+
+        // owner
+        if (cfRecordVO.ownerId > 0)
+        {
+            let person = this.personService.getPerson(cfRecordVO.ownerId);
+            cfRecordVO.ownerName = person.name;
+        }
+
+        // tag 
+        if (cfRecordVO.tagIdList.length > 0)
+        {
+            cfRecordVO.tagNames = [];
+
+            cfRecordVO.tagIdList.forEach((id, index) => {
+                let tag = this.tagService.getTag(id);
+                cfRecordVO.tagNames[index] = tag.name;
+            });
         }
     }
     

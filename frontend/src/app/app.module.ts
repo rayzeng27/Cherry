@@ -10,7 +10,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { registerLocaleData } from '@angular/common';
 import en from '@angular/common/locales/en';
 import { CfRcordDetailComponent } from './component/cfrecord-detail/cfrecord-detail.component';
-import { StartupService } from './service/startup.service';
+import { StartupService } from './service/Startup.service';
 
 registerLocaleData(en);
 
