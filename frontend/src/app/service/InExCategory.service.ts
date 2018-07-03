@@ -18,7 +18,7 @@ export class InExCategoryService
 
     public init() : Observable<Boolean>
     {
-       return this.http.get<InExCategory[]>("ef/inexcategories").pipe(
+       return this.http.get<InExCategory[]>("ef/inexcategory/list").pipe(
         map(categories => {
             categories.forEach(category => {
                 switch(category.inExType)

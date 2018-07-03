@@ -10,7 +10,10 @@ import { HttpClientModule } from '@angular/common/http';
 import { registerLocaleData } from '@angular/common';
 import en from '@angular/common/locales/en';
 import { CfRcordDetailComponent } from './component/cfrecord-detail/cfrecord-detail.component';
+import { BookkeepingComponent } from './component/bookkeeping/bookkeeping.component';
+import { CfRcordQueryComponent } from './component/cfrecord-query/cfrecord-query.component';
 import { StartupService } from './service/Startup.service';
+import { AppRoutingModule } from './/app-routing.module';
 
 registerLocaleData(en);
 
@@ -22,6 +25,8 @@ export function AppInitializerFactory(startupService: StartupService): Function
 @NgModule({
     declarations: [
         AppComponent,
+        BookkeepingComponent,
+        CfRcordQueryComponent,
         CfRcordDetailComponent
     ],
     imports: [
@@ -30,7 +35,8 @@ export function AppInitializerFactory(startupService: StartupService): Function
         BrowserAnimationsModule,
         FormsModule,
         HttpClientModule,
-        NgZorroAntdModule
+        NgZorroAntdModule,
+        AppRoutingModule
     ],
     providers: [
         { provide: APP_INITIALIZER, useFactory: AppInitializerFactory, deps: [StartupService], multi: true },

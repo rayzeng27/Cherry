@@ -15,7 +15,7 @@ export class AccountService
 
     public init() : Observable<Boolean>
     {
-       return this.http.get<Account[]>("ef/accounts").pipe(
+       return this.http.get<Account[]>("ef/account/list").pipe(
         map(accounts => {
             accounts.forEach(account => {
                 this.accountMap.set(account.id, account);

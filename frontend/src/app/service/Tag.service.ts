@@ -15,7 +15,7 @@ export class TagService
 
     public init() : Observable<Boolean>
     {
-       return this.http.get<Tag[]>("ef/tags").pipe(
+       return this.http.get<Tag[]>("ef/tag/list").pipe(
         map(tags => {
             tags.forEach(tag => {
                 this.tagMap.set(tag.id, tag);

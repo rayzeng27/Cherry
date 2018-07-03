@@ -23,7 +23,7 @@ export class CapitalFlowRecordService
 
     public query() : Observable<CapitalFlowRecordViewObject[]>
     {
-        return this.http.get<CapitalFlowRecordViewObject[]>("ef/cfrecords")
+        return this.http.get<CapitalFlowRecordViewObject[]>("ef/cfrecord/list")
         .pipe(
             map(cfRecordVOs => {
                 cfRecordVOs.forEach(cfRecordVO => this.fillingInformation(cfRecordVO)); 

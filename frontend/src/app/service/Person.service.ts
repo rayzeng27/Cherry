@@ -15,7 +15,7 @@ export class PersonService
 
     public init() : Observable<Boolean>
     {
-       return this.http.get<Person[]>("ef/persons").pipe(
+       return this.http.get<Person[]>("ef/person/list").pipe(
         map(persons => {
             persons.forEach(person => {
                 this.personMap.set(person.id, person);
