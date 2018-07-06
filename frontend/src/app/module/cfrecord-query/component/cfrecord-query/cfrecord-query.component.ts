@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { CapitalFlowRecordViewObject } from '../../entity/CapitalFlowRecord.entity';
-import { CapitalFlowRecordService } from '../../service/CapitalFlowRecord.service';
-import { EnumInExType } from '../../enum/InExType.enum';
+import { CapitalFlowRecordViewObject } from '../../../../entity/capital-flow-record.entity';
+import { CfRecordQueryService } from '../../service/cfrecord-query.service';
+import { EnumInExType } from '../../../../enum/inex-type.enum';
 
 @Component({
   templateUrl: './cfrecord-query.component.html',
@@ -14,13 +14,13 @@ export class CfRcordQueryComponent implements OnInit
 
   cfRecordVOs: CapitalFlowRecordViewObject[];
 
-  constructor(private cfRecordService: CapitalFlowRecordService) 
+  constructor(private cfRecordQueryService: CfRecordQueryService) 
   {
   }
 
   ngOnInit() 
   {
-    this.cfRecordService.query().subscribe(cfRecordVOs => {
+    this.cfRecordQueryService.query().subscribe(cfRecordVOs => {
       this.cfRecordVOs = cfRecordVOs;
     });
   }

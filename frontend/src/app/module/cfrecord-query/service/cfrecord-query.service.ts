@@ -3,15 +3,15 @@ import { HttpClient } from '@angular/common/http';
 
 import { Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
-import { CapitalFlowRecordViewObject } from '../entity/CapitalFlowRecord.entity';
-import { EnumInExType } from '../enum/InExType.enum';
-import { AccountService } from './Account.service';
-import { InExCategoryService } from './InExCategory.service';
-import { PersonService } from './Person.service';
-import { TagService } from './Tag.service';
+import { CapitalFlowRecordViewObject } from '../../../entity/capital-flow-record.entity';
+import { EnumInExType } from '../../../enum/inex-type.enum';
+import { AccountService } from '../../../service/account.service';
+import { InExCategoryService } from '../../../service/inexcategory.service';
+import { PersonService } from '../../../service/person.service';
+import { TagService } from '../../../service/tag.service';
 
-@Injectable({providedIn : 'root'})
-export class CapitalFlowRecordService
+@Injectable()
+export class CfRecordQueryService
 {
     constructor(private http: HttpClient,
                 private accountService : AccountService,

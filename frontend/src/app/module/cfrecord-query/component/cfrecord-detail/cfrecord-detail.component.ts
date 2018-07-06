@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { CapitalFlowRecordViewObject } from '../../entity/CapitalFlowRecord.entity';
-import { EnumInExType } from '../../enum/InExType.enum';
+import { EnumInExType } from '../../../../enum/inex-type.enum';
+import { CapitalFlowRecordViewObject } from '../../../../entity/capital-flow-record.entity';
 
 @Component({
   selector: 'app-root',
