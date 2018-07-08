@@ -6,13 +6,15 @@ import { catchError, map, tap } from 'rxjs/operators';
 import { CapitalFlowRecordViewObject } from '../../../entity/capital-flow-record.entity';
 import { EnumInExType } from '../../../enum/inex-type.enum';
 import { AccountService } from '../../../service/account.service';
-import { InExCategoryService } from '../../../service/inexcategory.service';
+import { InExCategoryService } from '../../../service/inex-category.service';
 import { PersonService } from '../../../service/person.service';
 import { TagService } from '../../../service/tag.service';
 
 @Injectable()
 export class CfRecordQueryService
 {
+    private cfRecordMap : Map<number, CapitalFlowRecordViewObject> = new Map();
+
     constructor(private http: HttpClient,
                 private accountService : AccountService,
                 private inExCategoryService : InExCategoryService,
@@ -111,6 +113,11 @@ export class CfRecordQueryService
         // return of(cfRecordVOs);
     }
 
+    getCfRecord(id: number) : CapitalFlowRecordViewObject 
+    {
+        return this.cfRecordMap.get(id);
+    }
+
     /**
      * 完善cfRecordVO的信息
      * @param cfRecordVO
@@ -166,6 +173,8 @@ export class CfRecordQueryService
                 cfRecordVO.tagNames[index] = tag.name;
             });
         }
+
+        this.cfRecordMap.set(cfRecordVO.id, cfRecordVO);
     }
     
     /**

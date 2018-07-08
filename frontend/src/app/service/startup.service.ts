@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AccountService } from './account.service';
-import { InExCategoryService } from './inexcategory.service';
+import { InExCategoryService } from './inex-category.service';
 import { PersonService } from './person.service';
 import { TagService } from './tag.service';
 import { zip } from 'rxjs';

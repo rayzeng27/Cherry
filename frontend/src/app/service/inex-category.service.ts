@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { InExCategory } from '../entity/inexcategory.entity';
+import { InExCategory } from '../entity/inex-category.entity';
 import { EnumInExType } from '../enum/inex-type.enum';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
