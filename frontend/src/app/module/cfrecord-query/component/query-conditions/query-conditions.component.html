@@ -1,2 +1,76 @@
-<div>
+<div nz-row>
+    <div nz-col nzSpan="24">
+        <nz-card [nzTitle]="titleMoney" [nzBodyStyle]="{'display' : enableMoneyCondition ? 'block' : 'none'}">
+            <ng-template #titleMoney>
+                <label nz-checkbox [(ngModel)]="enableMoneyCondition">金额</label>
+            </ng-template>
+            <p>Card content</p>
+          </nz-card>
+    </div>
+</div>
+
+<div nz-row>
+    <div nz-col nzSpan="24">
+        <nz-card [nzTitle]="titleInEx" [nzBodyStyle]="{'display' : enableInExCondition ? 'block' : 'none'}">
+            <ng-template #titleInEx>
+                <label nz-checkbox [(ngModel)]="enableInExCondition">收支</label>
+            </ng-template>
+            <p>Card content</p>
+        </nz-card>
+    </div>
+</div>
+
+<div nz-row>
+    <div nz-col nzSpan="24">
+        <nz-card [nzTitle]="titleAccount" [nzBodyStyle]="{'display' : enableAccountCondition ? 'block' : 'none'}">
+            <ng-template #titleAccount>
+                <label nz-checkbox [(ngModel)]="enableAccountCondition">账户</label>
+            </ng-template>
+            <p>Card content</p>
+        </nz-card>
+    </div>
+</div>
+
+<div nz-row>
+    <div nz-col nzSpan="24">
+        <nz-card [nzTitle]="titleTag" [nzBodyStyle]="{'display' : enableTagCondition ? 'block' : 'none'}">
+            <ng-template #titleTag>
+                <label nz-checkbox [(ngModel)]="enableTagCondition">标签</label>
+            </ng-template>
+            <p>Card content</p>
+        </nz-card>
+    </div>
+</div>
+
+<div nz-row>
+    <div nz-col nzSpan="24">
+        <nz-card [nzTitle]="titleDateTime" [nzBodyStyle]="{'display' : enableDateTimeCondition ? 'block' : 'none'}">
+            <ng-template #titleDateTime>
+                <label nz-checkbox [(ngModel)]="enableDateTimeCondition">时间</label>
+            </ng-template>
+            <p>Card content</p>
+        </nz-card>
+    </div>
+</div>
+
+<div nz-row>
+    <div nz-col nzSpan="24">
+        <nz-card [nzTitle]="titleOwner" [nzBodyStyle]="{'display' : enableOwnerCondition ? 'block' : 'none'}">
+            <ng-template #titleOwner>
+                <label nz-checkbox [(ngModel)]="enableOwnerCondition">归属人员</label>
+            </ng-template>
+            <p>Card content</p>
+        </nz-card>
+    </div>
+</div>
+
+<div nz-row>
+    <div nz-col nzSpan="24">
+        <nz-card [nzTitle]="titleRemark" [nzBodyStyle]="{'display' : enableRemarkCondition ? 'block' : 'none'}">
+            <ng-template #titleRemark>
+                <label nz-checkbox [(ngModel)]="enableRemarkCondition">备注</label>
+            </ng-template>
+            <p>Card content</p>
+        </nz-card>
+    </div>
 </div>

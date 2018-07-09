@@ -1,13 +1,14 @@
-import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, APP_INITIALIZER } from '@angular/core';
-import { NgZorroAntdModule, NZ_I18N, en_US } from 'ng-zorro-antd';
-
-import { AppComponent } from './app.component';
+import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { registerLocaleData } from '@angular/common';
 import en from '@angular/common/locales/en';
+
+import { NgZorroAntdModule, NZ_I18N, en_US } from 'ng-zorro-antd';
+
+import { AppComponent } from './app.component';
 import { BookkeepingComponent } from './component/bookkeeping/bookkeeping.component';
 import { StartupService } from './service/startup.service';
 import { AppRoutingModule } from './/app-routing.module';
@@ -26,10 +27,9 @@ export function AppInitializerFactory(startupService: StartupService): Function
     ],
     imports: [
         BrowserModule,
-        NgZorroAntdModule.forRoot(),
         BrowserAnimationsModule,
-        FormsModule,
         HttpClientModule,
+        NgZorroAntdModule.forRoot(),
         AppRoutingModule
     ],
     providers: [

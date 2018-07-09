@@ -37,18 +37,12 @@ export class CfRecordQueryService
         // let cfRecordVOs : CapitalFlowRecordViewObject[] = [];
         // cfRecordVOs[0] = new CapitalFlowRecordViewObject();
         // cfRecordVOs[0].id = 1;
-        // cfRecordVOs[0].groupId = 0;
-        // cfRecordVOs[0].groupFlag = false;
         // cfRecordVOs[0].recordDateTime = "201806201513";
-        // cfRecordVOs[0].lastOperDateTime = "201806201513";
         // cfRecordVOs[0].flowOutAccountId = 0;
         // cfRecordVOs[0].flowOutOperationId = "";
         // cfRecordVOs[0].flowInAccountId = 123456;
         // cfRecordVOs[0].flowInOperationId = "depetIncome";
         // cfRecordVOs[0].localMoney = 123123.12;
-        // cfRecordVOs[0].foreignMoney = 123123.12;
-        // cfRecordVOs[0].foreignCurrencyId = 0;
-        // cfRecordVOs[0].exchangeRate = 1;
         // cfRecordVOs[0].ownerId = 1;
         // cfRecordVOs[0].inExType = EnumInExType.INCOME;
         // cfRecordVOs[0].inExCategoryId = 123;
@@ -58,22 +52,15 @@ export class CfRecordQueryService
         // cfRecordVOs[0].flowInAccountName = "[小明]中国银行卡";
         // cfRecordVOs[0].inExCategoryName = "薪水";
         // cfRecordVOs[0].ownerName = "小明";
-        // cfRecordVOs[0].tagsName = "";
 
         // cfRecordVOs[1] = new CapitalFlowRecordViewObject();
         // cfRecordVOs[1].id = 2;
-        // cfRecordVOs[1].groupId = 0;
-        // cfRecordVOs[1].groupFlag = false;
         // cfRecordVOs[1].recordDateTime = "201806201913";
-        // cfRecordVOs[1].lastOperDateTime = "201806201913";
         // cfRecordVOs[1].flowOutAccountId = 111;
         // cfRecordVOs[1].flowOutOperationId = "creditcard";
         // cfRecordVOs[1].flowInAccountId = 0;
         // cfRecordVOs[1].flowInOperationId = "creditcard";
         // cfRecordVOs[1].localMoney = 130;
-        // cfRecordVOs[1].foreignMoney = 130;
-        // cfRecordVOs[1].foreignCurrencyId = 0;
-        // cfRecordVOs[1].exchangeRate = 1;
         // cfRecordVOs[1].ownerId = 1;
         // cfRecordVOs[1].inExType = EnumInExType.EXPENSES;
         // cfRecordVOs[1].inExCategoryId = 222;
@@ -83,22 +70,16 @@ export class CfRecordQueryService
         // cfRecordVOs[1].flowInAccountName = "";
         // cfRecordVOs[1].inExCategoryName = "加油";
         // cfRecordVOs[1].ownerName = "小明";
-        // cfRecordVOs[1].tagsName = "旅游，昆明，三亚";
+        // cfRecordVOs[1].tagsName = ["旅游，昆明，三亚"];
 
         // cfRecordVOs[2] = new CapitalFlowRecordViewObject();
         // cfRecordVOs[2].id = 2;
-        // cfRecordVOs[2].groupId = 0;
-        // cfRecordVOs[2].groupFlag = false;
         // cfRecordVOs[2].recordDateTime = "201806201913";
-        // cfRecordVOs[2].lastOperDateTime = "201806201913";
         // cfRecordVOs[2].flowOutAccountId = 145;
         // cfRecordVOs[2].flowOutOperationId = "cash";
         // cfRecordVOs[2].flowInAccountId = 245;
         // cfRecordVOs[2].flowInOperationId = "creditcard";
         // cfRecordVOs[2].localMoney = 12220;
-        // cfRecordVOs[2].foreignMoney = 12220;
-        // cfRecordVOs[2].foreignCurrencyId = 0;
-        // cfRecordVOs[2].exchangeRate = 1;
         // cfRecordVOs[2].ownerId = 2;
         // cfRecordVOs[2].inExType = EnumInExType.NONE;
         // cfRecordVOs[2].inExCategoryId = 0;
@@ -108,8 +89,7 @@ export class CfRecordQueryService
         // cfRecordVOs[2].flowInAccountName = "[小明]招行白金信用卡";
         // cfRecordVOs[2].inExCategoryName = "";
         // cfRecordVOs[2].ownerName = "小李";
-        // cfRecordVOs[2].tagsName = "";
-        // debugger;
+
         // return of(cfRecordVOs);
     }
 
