@@ -37,7 +37,7 @@ export class CfRecordQueryService
         // let cfRecordVOs : CapitalFlowRecordViewObject[] = [];
         // cfRecordVOs[0] = new CapitalFlowRecordViewObject();
         // cfRecordVOs[0].id = 1;
-        // cfRecordVOs[0].recordDateTime = "201806201513";
+        // cfRecordVOs[0].recordDateTime = new Date();
         // cfRecordVOs[0].flowOutAccountId = 0;
         // cfRecordVOs[0].flowOutOperationId = "";
         // cfRecordVOs[0].flowInAccountId = 123456;
@@ -55,7 +55,7 @@ export class CfRecordQueryService
 
         // cfRecordVOs[1] = new CapitalFlowRecordViewObject();
         // cfRecordVOs[1].id = 2;
-        // cfRecordVOs[1].recordDateTime = "201806201913";
+        // cfRecordVOs[1].recordDateTime = new Date();
         // cfRecordVOs[1].flowOutAccountId = 111;
         // cfRecordVOs[1].flowOutOperationId = "creditcard";
         // cfRecordVOs[1].flowInAccountId = 0;
@@ -70,11 +70,11 @@ export class CfRecordQueryService
         // cfRecordVOs[1].flowInAccountName = "";
         // cfRecordVOs[1].inExCategoryName = "加油";
         // cfRecordVOs[1].ownerName = "小明";
-        // cfRecordVOs[1].tagsName = ["旅游，昆明，三亚"];
+        // cfRecordVOs[1].tagNames = ["旅游", "昆明", "三亚"];
 
         // cfRecordVOs[2] = new CapitalFlowRecordViewObject();
-        // cfRecordVOs[2].id = 2;
-        // cfRecordVOs[2].recordDateTime = "201806201913";
+        // cfRecordVOs[2].id = 3;
+        // cfRecordVOs[2].recordDateTime = new Date();
         // cfRecordVOs[2].flowOutAccountId = 145;
         // cfRecordVOs[2].flowOutOperationId = "cash";
         // cfRecordVOs[2].flowInAccountId = 245;
@@ -89,6 +89,10 @@ export class CfRecordQueryService
         // cfRecordVOs[2].flowInAccountName = "[小明]招行白金信用卡";
         // cfRecordVOs[2].inExCategoryName = "";
         // cfRecordVOs[2].ownerName = "小李";
+
+        // this.cfRecordMap.set(cfRecordVOs[0].id, cfRecordVOs[0]);
+        // this.cfRecordMap.set(cfRecordVOs[1].id, cfRecordVOs[1]);
+        // this.cfRecordMap.set(cfRecordVOs[2].id, cfRecordVOs[2]);
 
         // return of(cfRecordVOs);
     }

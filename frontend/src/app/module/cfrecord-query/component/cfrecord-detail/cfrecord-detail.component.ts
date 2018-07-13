@@ -50,11 +50,12 @@ export class CfRecordDetailComponent implements OnInit
     // this.cfRecordVO.ownerId = 2;
     // this.cfRecordVO.inExType = EnumInExType.NONE;
     // this.cfRecordVO.inExCategoryId = 0;
-    // this.cfRecordVO.remark = "很长很长腿长的备注，长得没有人性呀3333333333333";
+    // this.cfRecordVO.remark = "很长很长腿长的备注，sdf,ef,wef,ewf,wef,ewf,ew,few,长得没有人性呀3333333333333";
 
     // this.cfRecordVO.flowOutAccountName = "[小明]现金账户";
     // this.cfRecordVO.flowInAccountName = "[小明]招行白金信用卡";
     // this.cfRecordVO.inExCategoryName = "";
     // this.cfRecordVO.ownerName = "小李";
+    // this.cfRecordVO.tagNames = ["游泳", "滑雪", "爬山"];
   }
 }
