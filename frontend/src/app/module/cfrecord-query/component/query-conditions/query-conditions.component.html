@@ -1,76 +1,85 @@
 <div nz-row>
     <div nz-col nzSpan="24">
-        <nz-card [nzTitle]="titleMoney" [nzBodyStyle]="{'display' : enableMoneyCondition ? 'block' : 'none'}">
-            <ng-template #titleMoney>
-                <label nz-checkbox [(ngModel)]="enableMoneyCondition">金额</label>
-            </ng-template>
-            <p>Card content</p>
+        <nz-card>
+            <label nz-checkbox [(ngModel)]="enableMoneyCondition" style="position:absolute; top:-11px; background-color:white; padding-left:8px;">金额</label>
+            <nz-input-group nzCompact>
+                <nz-input-number nzPlaceHolder="Minimum" nzPrecision="2" nzMin="0" [nzDisabled]="!enableMoneyCondition" style="width:40%; text-align: center;"></nz-input-number>
+                <input type="text" disabled nz-input placeholder="~" style="width:20%; border-left:0px; pointer-events:none; text-align: center;">
+                <nz-input-number nzPlaceHolder="Maximum" nzPrecision="2" nzMin="0" [nzDisabled]="!enableMoneyCondition" style="width: 40%; border-left: 0px;"></nz-input-number>
+              </nz-input-group>
           </nz-card>
     </div>
 </div>
 
 <div nz-row>
     <div nz-col nzSpan="24">
-        <nz-card [nzTitle]="titleInEx" [nzBodyStyle]="{'display' : enableInExCondition ? 'block' : 'none'}">
-            <ng-template #titleInEx>
-                <label nz-checkbox [(ngModel)]="enableInExCondition">收支</label>
-            </ng-template>
-            <p>Card content</p>
+        <nz-card>
+            <label nz-checkbox [(ngModel)]="enableInExCondition" style="position:absolute; top:-11px; background-color:white; padding-left:8px;">收支分类</label>
+            <nz-input-group nzCompact>
+                <nz-select [ngModel]="inExType" [nzDisabled]="!enableInExCondition" style="width:30%;">
+                    <nz-option [nzLabel]="EnumInExType.INCOME"   [nzValue]="EnumInExType.INCOME"></nz-option>
+                    <nz-option [nzLabel]="EnumInExType.EXPENSES" [nzValue]="EnumInExType.EXPENSES"></nz-option>
+                </nz-select>
+                <nz-select [(ngModel)]="inExCategories" [nzDisabled]="!enableInExCondition" nzMode="tags" nzPlaceHolder="Please select" style="width:70%;">
+                    <nz-option [nzLabel]="'Option2-1'" [nzValue]="'Option2-1'"></nz-option>
+                    <nz-option [nzLabel]="'Option2-2'" [nzValue]="'Option2-2'"></nz-option>
+                </nz-select>
+            </nz-input-group>
         </nz-card>
     </div>
 </div>
 
 <div nz-row>
     <div nz-col nzSpan="24">
-        <nz-card [nzTitle]="titleAccount" [nzBodyStyle]="{'display' : enableAccountCondition ? 'block' : 'none'}">
-            <ng-template #titleAccount>
-                <label nz-checkbox [(ngModel)]="enableAccountCondition">账户</label>
-            </ng-template>
-            <p>Card content</p>
+        <nz-card>
+            <label nz-checkbox [(ngModel)]="enableAccountCondition" style="position:absolute; top:-11px; background-color:white; padding-left:8px;">账户</label>
+            <nz-select [(ngModel)]="accounts" [nzDisabled]="!enableAccountCondition" nzMode="tags" nzPlaceHolder="Please select" style="width:100%;">
+                <nz-option-group *ngFor="let acctGroup of accountGroups" [nzLabel]="acctGroup.name">
+                    <nz-option *ngFor="let account of acctGroup.accounts" [nzValue]="account.id" [nzLabel]="account.name"></nz-option>
+                </nz-option-group>
+            </nz-select>
         </nz-card>
     </div>
 </div>
 
 <div nz-row>
     <div nz-col nzSpan="24">
-        <nz-card [nzTitle]="titleTag" [nzBodyStyle]="{'display' : enableTagCondition ? 'block' : 'none'}">
-            <ng-template #titleTag>
-                <label nz-checkbox [(ngModel)]="enableTagCondition">标签</label>
-            </ng-template>
-            <p>Card content</p>
+        <nz-card>
+            <label nz-checkbox [(ngModel)]="enableTagCondition" style="position:absolute; top:-11px; background-color:white; padding-left:8px;">标签</label>
+            <nz-select [(ngModel)]="tags" [nzDisabled]="!enableTagCondition" nzMode="tags" nzPlaceHolder="Please select" style="width:100%;">
+                <nz-option [nzLabel]="'Option2-1'" [nzValue]="'Option2-1'"></nz-option>
+                <nz-option [nzLabel]="'Option2-2'" [nzValue]="'Option2-2'"></nz-option>
+            </nz-select>
         </nz-card>
     </div>
 </div>
 
 <div nz-row>
     <div nz-col nzSpan="24">
-        <nz-card [nzTitle]="titleDateTime" [nzBodyStyle]="{'display' : enableDateTimeCondition ? 'block' : 'none'}">
-            <ng-template #titleDateTime>
-                <label nz-checkbox [(ngModel)]="enableDateTimeCondition">时间</label>
-            </ng-template>
-            <p>Card content</p>
+        <nz-card>
+            <label nz-checkbox [(ngModel)]="enableDateTimeCondition" style="position:absolute; top:-11px; background-color:white; padding-left:8px;">时间</label>
+            <nz-range-picker [(ngModel)]="dateRange" [nzDisabled]="!enableDateTimeCondition"></nz-range-picker>
         </nz-card>
     </div>
 </div>
 
 <div nz-row>
     <div nz-col nzSpan="24">
-        <nz-card [nzTitle]="titleOwner" [nzBodyStyle]="{'display' : enableOwnerCondition ? 'block' : 'none'}">
-            <ng-template #titleOwner>
-                <label nz-checkbox [(ngModel)]="enableOwnerCondition">归属人员</label>
-            </ng-template>
-            <p>Card content</p>
+        <nz-card>
+            <label nz-checkbox [(ngModel)]="enableOwnerCondition" style="position:absolute; top:-11px; background-color:white; padding-left:8px;">归属人员</label>
+            <nz-select [(ngModel)]="owners" [nzDisabled]="!enableOwnerCondition" nzMode="tags" nzPlaceHolder="Please select" style="width:100%;">
+                <nz-option [nzLabel]="'Option2-1'" [nzValue]="'Option2-1'"></nz-option>
+                <nz-option [nzLabel]="'Option2-2'" [nzValue]="'Option2-2'"></nz-option>
+            </nz-select>
         </nz-card>
     </div>
 </div>
 
 <div nz-row>
     <div nz-col nzSpan="24">
-        <nz-card [nzTitle]="titleRemark" [nzBodyStyle]="{'display' : enableRemarkCondition ? 'block' : 'none'}">
-            <ng-template #titleRemark>
-                <label nz-checkbox [(ngModel)]="enableRemarkCondition">备注</label>
-            </ng-template>
-            <p>Card content</p>
+        <nz-card>
+            <label nz-checkbox [(ngModel)]="enableRemarkCondition" style="position:absolute; top:-11px; background-color:white; padding-left:8px;">备注</label>
+            <input nz-input [(ngModel)]="remark" [disabled]="!enableRemarkCondition" style="width:100%;">
         </nz-card>
     </div>
 </div>
