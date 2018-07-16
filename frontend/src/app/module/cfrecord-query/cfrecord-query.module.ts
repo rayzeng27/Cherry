@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgZorroAntdModule } from 'ng-zorro-antd';
 
 import { CfRecordQueryComponent } from './component/cfrecord-query/cfrecord-query.component';
@@ -20,6 +20,7 @@ import { CfRecordQueryRoutingModule } from './cfrecord-query-routing.module';
     imports: [
         CommonModule,
         FormsModule,
+        ReactiveFormsModule,
         NgZorroAntdModule,
         CfRecordQueryRoutingModule
     ],

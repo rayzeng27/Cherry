@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormBuilder } from '@angular/forms';
 
 import { EnumInExType } from '../../../../enum/inex-type.enum';
 import { AccountService } from '../../../../service/account.service';
@@ -15,12 +16,23 @@ export class QueryConditionsComponent implements OnInit
 
     private accountGroups : AccountGroup[] = [];
 
-    constructor(private accountService : AccountService) 
+    private conditionForm : FormGroup;
+
+    constructor(private fb : FormBuilder,
+                private accountService : AccountService) 
     {
     }
 
     ngOnInit() 
     {
+        this.conditionForm = this.fb.group({
+            moneyCondition : this.fb.group({
+                enable : false,
+                lowerLimit : 0,
+                upperLimit : 0
+            })
+        });
+
         this.accountGroups = this.accountService.getAccountGroups();
     }
 }

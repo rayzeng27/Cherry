@@ -1,15 +1,29 @@
-<div nz-row>
-    <div nz-col nzSpan="24">
-        <nz-card>
-            <label nz-checkbox [(ngModel)]="enableMoneyCondition" style="position:absolute; top:-11px; background-color:white; padding-left:8px;">金额</label>
-            <nz-input-group nzCompact>
-                <nz-input-number nzPlaceHolder="Minimum" nzPrecision="2" nzMin="0" [nzDisabled]="!enableMoneyCondition" style="width:40%; text-align: center;"></nz-input-number>
-                <input type="text" disabled nz-input placeholder="~" style="width:20%; border-left:0px; pointer-events:none; text-align: center;">
-                <nz-input-number nzPlaceHolder="Maximum" nzPrecision="2" nzMin="0" [nzDisabled]="!enableMoneyCondition" style="width: 40%; border-left: 0px;"></nz-input-number>
-              </nz-input-group>
-          </nz-card>
+<form [formGroup]="conditionForm">
+    <div nz-row>
+        <div nz-col nzSpan="24">
+            <nz-card formGroupName="moneyCondition">
+                <label nz-checkbox 
+                       formControlName="enable" 
+                       style="position:absolute; top:-11px; background-color:white; padding-left:8px;">金额</label>
+                <nz-input-group nzCompact>
+                    <nz-input-number formControlName="lowerLimit" 
+                                     nzPlaceHolder="Minimum" 
+                                     nzPrecision="2" 
+                                     nzMin="0" 
+                                     [nzDisabled]="!conditionForm.get('moneyCondition.enable').value" 
+                                     style="width:40%; text-align: center;"></nz-input-number>
+                    <input type="text" disabled nz-input placeholder="~" style="width:20%; border-left:0px; pointer-events:none; text-align: center;">
+                    <nz-input-number formControlName="upperLimit"
+                                     nzPlaceHolder="Maximum" 
+                                     nzPrecision="2" 
+                                     nzMin="0" 
+                                     [nzDisabled]="!conditionForm.get('moneyCondition.enable').value" 
+                                     style="width: 40%; border-left: 0px;"></nz-input-number>
+                </nz-input-group>
+            </nz-card>
+        </div>
     </div>
-</div>
+</form>
 
 <div nz-row>
     <div nz-col nzSpan="24">
