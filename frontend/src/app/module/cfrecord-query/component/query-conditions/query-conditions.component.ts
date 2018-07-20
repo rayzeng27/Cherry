@@ -1,9 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, ValidatorFn, ValidationErrors, FormControl } from '@angular/forms';
 
 import { EnumInExType } from '../../../../enum/inex-type.enum';
 import { AccountService } from '../../../../service/account.service';
+import { PersonService } from '../../../../service/person.service';
+import { TagService } from '../../../../service/tag.service';
 import { AccountGroup } from '../../../../entity/account.entity';
+import { Person } from '../../../../entity/person.entity';
+import { Tag } from '../../../../entity/tag.entity';
 
 @Component({
   templateUrl: './query-conditions.component.html',
@@ -16,10 +20,16 @@ export class QueryConditionsComponent implements OnInit
 
     private accountGroups : AccountGroup[] = [];
 
+    private persons : Person[] = [];
+
+    private tags : Tag[] = [];
+
     private conditionForm : FormGroup;
 
     constructor(private fb : FormBuilder,
-                private accountService : AccountService) 
+                private accountService : AccountService,
+                private personService : PersonService,
+                private tagService : TagService) 
     {
     }
 
@@ -46,7 +56,8 @@ export class QueryConditionsComponent implements OnInit
             }),
             dateTimeCondition : this.fb.group({
                 enable : false,
-                dateRange : null
+                startDate : null,
+                endDate : null
             }),
             ownerCondition : this.fb.group({
                 enable : false,
@@ -67,13 +78,38 @@ export class QueryConditionsComponent implements OnInit
         this.initRemarkConditionUI();
 
         this.accountGroups = this.accountService.getAccountGroups();
+        this.persons = this.personService.getPersons();
+        this.tags = this.tagService.getTags();
     }
 
     private initMoneyConditionUI() : void
     {
+        let moneyConditionGroup = this.conditionForm.get("moneyCondition");
         let enableControl = this.conditionForm.get("moneyCondition.enable");
         let lowerLimitControl = this.conditionForm.get("moneyCondition.lowerLimit");
         let upperLimitControl = this.conditionForm.get("moneyCondition.upperLimit");
+
+        let moneyValidator: ValidatorFn = (control: FormGroup): ValidationErrors | null => {
+            let result = null;
+
+            if (!lowerLimitControl.disabled && !upperLimitControl.disabled)
+            {
+                if (0 == lowerLimitControl.value && 0 == upperLimitControl.value)
+                {
+                    result = {'money' : 'Money Error!'};
+                }
+                else if (0 < lowerLimitControl.value && 0 < upperLimitControl.value)
+                {
+                    result = (lowerLimitControl.value > upperLimitControl.value) ? {'money' : 'Money Error!'} : null;
+                }
+            }
+
+            lowerLimitControl.setErrors(result);
+            upperLimitControl.setErrors(result);
+
+            return result;
+        };
+        moneyConditionGroup.setValidators(moneyValidator);
 
         lowerLimitControl.disable();
         upperLimitControl.disable();
@@ -121,6 +157,7 @@ export class QueryConditionsComponent implements OnInit
         let accountsControl = this.conditionForm.get("accountCondition.accounts");
 
         accountsControl.disable();
+        accountsControl.setValidators(Validators.required);
 
         enableControl.valueChanges.subscribe(enable => {
             if (enable)
@@ -140,6 +177,7 @@ export class QueryConditionsComponent implements OnInit
         let tagsControl = this.conditionForm.get("tagCondition.tags");
 
         tagsControl.disable();
+        tagsControl.setValidators(Validators.required);
 
         enableControl.valueChanges.subscribe(enable => {
             if (enable)
@@ -155,19 +193,49 @@ export class QueryConditionsComponent implements OnInit
 
     private initDateTimeConditionUI() : void
     {
+        let dateTimeConditionGroup = this.conditionForm.get("dateTimeCondition");
         let enableControl = this.conditionForm.get("dateTimeCondition.enable");
-        let dateRangeControl = this.conditionForm.get("dateTimeCondition.dateRange");
+        let startDateControl = this.conditionForm.get("dateTimeCondition.startDate");
+        let endDateControl = this.conditionForm.get("dateTimeCondition.endDate");
 
-        dateRangeControl.disable();
+        let dateTimeValidator: ValidatorFn = (control: FormGroup): ValidationErrors | null => {
+            let result = null;
+
+            if (!startDateControl.disabled && !endDateControl.disabled)
+            {
+                let startDate : Date = startDateControl.value;
+                let endDate : Date = endDateControl.value;
+
+                if (null == startDate && null ==endDate)
+                {
+                    result = {'datetime' : 'Datetime Error!'};
+                }
+                else if (null != startDate && null !=endDate)
+                {
+                    result = (startDate.getTime() > endDate.getTime()) ? {'datetime' : 'Datetime Error!'} : null;
+                }
+            }
+
+            startDateControl.setErrors(result);
+            endDateControl.setErrors(result);
+
+            return result;
+        };
+        dateTimeConditionGroup.setValidators(dateTimeValidator);
+
+        startDateControl.disable();
+        endDateControl.disable();
 
         enableControl.valueChanges.subscribe(enable => {
             if (enable)
             {
-                dateRangeControl.enable();
+                startDateControl.enable();
+                endDateControl.enable();
             }
             else
             {
-                dateRangeControl.disable();
+                startDateControl.disable();
+                endDateControl.disable();
             }
         });
     }
@@ -178,6 +246,7 @@ export class QueryConditionsComponent implements OnInit
         let ownersControl = this.conditionForm.get("ownerCondition.owners");
 
         ownersControl.disable();
+        ownersControl.setValidators(Validators.required);
 
         enableControl.valueChanges.subscribe(enable => {
             if (enable)

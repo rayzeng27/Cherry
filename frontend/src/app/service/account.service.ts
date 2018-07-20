@@ -8,6 +8,7 @@ import { map } from 'rxjs/operators';
 export class AccountService
 {
     private groupMap : Map<number, AccountGroup> = new Map();
+
     private accountMap : Map<number, Account> = new Map();
 
     constructor(private http: HttpClient)
@@ -17,7 +18,7 @@ export class AccountService
     public init() : Observable<Boolean>
     {
        return zip(this.http.get<Account[]>("ef/account/list"), 
-                  this.http.get<AccountGroup[]>("ef/account/groups"))
+                  this.http.get<AccountGroup[]>("ef/account-group/list"))
                 .pipe(map(result => {
                     let accounts = result[0];
                     let groups = result[1];

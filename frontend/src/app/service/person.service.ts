@@ -32,4 +32,10 @@ export class PersonService
 
         return person;
     }
+
+    public getPersons() : Person[]
+    {
+        let persons = Array.from(this.personMap.values());
+        return persons;
+    }
 }

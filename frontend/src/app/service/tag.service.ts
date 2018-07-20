@@ -32,4 +32,10 @@ export class TagService
 
         return tag;
     }
+
+    getTags() : Tag[] 
+    {
+        let tags = Array.from(this.tagMap.values());
+        return tags;
+    }
 }

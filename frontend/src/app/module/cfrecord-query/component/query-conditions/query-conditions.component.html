@@ -9,16 +9,16 @@
                     <nz-form-control>
                         <nz-input-group nzCompact>
                             <nz-input-number formControlName="lowerLimit"
-                                            nzPlaceHolder="Minimum"
-                                            nzPrecision="2"
-                                            nzMin="0"
-                                            style="width:40%; text-align: center;"></nz-input-number>
-                            <input type="text" disabled nz-input placeholder="~" style="width:20%; border-left:0px; pointer-events:none; text-align: center;">
+                                             nzPlaceHolder="Minimum"
+                                             nzPrecision="2"
+                                             nzMin="0"
+                                             style="width:40%;"></nz-input-number>
+                            <input type="text" disabled nz-input placeholder="~" style="width:20%; pointer-events:none; text-align: center;">
                             <nz-input-number formControlName="upperLimit"
-                                            nzPlaceHolder="Maximum"
-                                            nzPrecision="2"
-                                            nzMin="0"
-                                            style="width: 40%; border-left: 0px;"></nz-input-number>
+                                             nzPlaceHolder="Maximum"
+                                             nzPrecision="2"
+                                             nzMin="0"
+                                             style="width: 40%;"></nz-input-number>
                         </nz-input-group>
                         <nz-form-explain *ngIf="conditionForm.get('moneyCondition').dirty && conditionForm.get('moneyCondition').invalid">Money Error!</nz-form-explain>
                     </nz-form-control>
@@ -30,7 +30,7 @@
     <div nz-row>
         <div nz-col nzSpan="24">
             <nz-card formGroupName="inExCondition" [nzBodyStyle]="{'padding-top' : '0px', 'padding-bottom' : '0px'}">
-                <label nz-checkbox 
+                <label nz-checkbox
                        formControlName="enable"
                        style="position:absolute; top:-11px; background-color:white; padding-left:8px;">收支分类</label>
                 <nz-form-item>
@@ -40,10 +40,10 @@
                                 <nz-option [nzLabel]="EnumInExType.INCOME"   [nzValue]="EnumInExType.INCOME"></nz-option>
                                 <nz-option [nzLabel]="EnumInExType.EXPENSES" [nzValue]="EnumInExType.EXPENSES"></nz-option>
                             </nz-select>
-                            <nz-select formControlName="inExCategories" 
-                                    nzMode="tags" 
-                                    nzPlaceHolder="Please select" 
-                                    style="width:70%;">
+                            <nz-select formControlName="inExCategories"
+                                       nzMode="tags"
+                                       nzPlaceHolder="Please select"
+                                       style="width:70%;">
                                 <nz-option [nzLabel]="'Option2-1'" [nzValue]="'Option2-1'"></nz-option>
                                 <nz-option [nzLabel]="'Option2-2'" [nzValue]="'Option2-2'"></nz-option>
                             </nz-select>
@@ -58,15 +58,15 @@
     <div nz-row>
         <div nz-col nzSpan="24">
             <nz-card formGroupName="accountCondition" [nzBodyStyle]="{'padding-top' : '0px', 'padding-bottom' : '0px'}">
-                <label nz-checkbox 
+                <label nz-checkbox
                        formControlName="enable"
                        style="position:absolute; top:-11px; background-color:white; padding-left:8px;">账户</label>
                 <nz-form-item>
                     <nz-form-control>
-                       <nz-select formControlName="accounts" 
-                           nzMode="tags" 
-                           nzPlaceHolder="Please select" 
-                           style="width:100%;">
+                       <nz-select formControlName="accounts"
+                                  nzMode="tags"
+                                  nzPlaceHolder="Please select"
+                                  style="width:100%;">
                             <nz-option-group *ngFor="let acctGroup of accountGroups" [nzLabel]="acctGroup.name">
                                 <nz-option *ngFor="let account of acctGroup.accounts" [nzValue]="account.id" [nzLabel]="account.name"></nz-option>
                             </nz-option-group>
@@ -87,11 +87,10 @@
                 <nz-form-item>
                     <nz-form-control>
                         <nz-select formControlName="tags"
-                           nzMode="tags" 
-                           nzPlaceHolder="Please select" 
-                           style="width:100%;">
-                            <nz-option [nzLabel]="'Option2-1'" [nzValue]="'Option2-1'"></nz-option>
-                            <nz-option [nzLabel]="'Option2-2'" [nzValue]="'Option2-2'"></nz-option>
+                                   nzMode="tags"
+                                   nzPlaceHolder="Please select"
+                                   style="width:100%;">
+                            <nz-option *ngFor="let tag of tags" [nzValue]="tag.id" [nzLabel]="'[' + tag.date + ']' + tag.name"></nz-option>
                         </nz-select>
                         <nz-form-explain *ngIf="conditionForm.get('tagCondition').dirty && conditionForm.get('tagCondition').invalid">Tag Error!</nz-form-explain>
                     </nz-form-control>
@@ -108,7 +107,11 @@
                        style="position:absolute; top:-11px; background-color:white; padding-left:8px;">时间</label>
                 <nz-form-item>
                     <nz-form-control>
-                        <nz-range-picker formControlName="dateRange"></nz-range-picker>
+                        <nz-input-group nzCompact>
+                            <nz-date-picker formControlName="startDate" [nzFormat]="dateFormat" style="width:40%;"></nz-date-picker>
+                            <input type="text" disabled nz-input placeholder="~" style="width:20%; pointer-events:none; text-align:center;">
+                            <nz-date-picker formControlName="endDate" [nzFormat]="dateFormat" style="width:40%;"></nz-date-picker>
+                        </nz-input-group>
                         <nz-form-explain *ngIf="conditionForm.get('dateTimeCondition').dirty && conditionForm.get('dateTimeCondition').invalid">Datetime Error!</nz-form-explain>
                     </nz-form-control>
                 </nz-form-item>
@@ -124,12 +127,11 @@
                        style="position:absolute; top:-11px; background-color:white; padding-left:8px;">归属人员</label>
                 <nz-form-item>
                     <nz-form-control>
-                        <nz-select formControlName="owners" 
-                           nzMode="tags" 
-                           nzPlaceHolder="Please select" 
-                           style="width:100%;">
-                            <nz-option [nzLabel]="'Option2-1'" [nzValue]="'Option2-1'"></nz-option>
-                            <nz-option [nzLabel]="'Option2-2'" [nzValue]="'Option2-2'"></nz-option>
+                        <nz-select formControlName="owners"
+                                   nzMode="tags"
+                                   nzPlaceHolder="Please select"
+                                   style="width:100%;">
+                            <nz-option *ngFor="let person of persons" [nzValue]="person.id" [nzLabel]="person.name"></nz-option>
                         </nz-select>
                         <nz-form-explain *ngIf="conditionForm.get('ownerCondition').dirty && conditionForm.get('ownerCondition').invalid">Owner Error!</nz-form-explain>
                     </nz-form-control>
@@ -141,7 +143,7 @@
     <div nz-row>
         <div nz-col nzSpan="24">
             <nz-card formGroupName="remarkCondition" [nzBodyStyle]="{'padding-top' : '0px', 'padding-bottom' : '0px'}">
-                <label nz-checkbox 
+                <label nz-checkbox
                        formControlName="enable"
                        style="position:absolute; top:-11px; background-color:white; padding-left:8px;">备注</label>
                 <nz-form-item>
@@ -153,4 +155,13 @@
             </nz-card>
         </div>
     </div>
+
+    <nz-form-item>
+        <nz-form-control [nzOffset]="3" [nzSpan]="8">
+            <button nz-button nzType="primary" [disabled]="conditionForm.invalid" style="width: 100%;">Query</button>
+        </nz-form-control>
+        <nz-form-control [nzOffset]="2" [nzSpan]="8">
+            <button nz-button style="width: 100%;">Reset</button>
+        </nz-form-control>
+    </nz-form-item>
 </form>
