@@ -13,6 +13,8 @@ import { TagService } from '../../../service/tag.service';
 @Injectable()
 export class CfRecordQueryService
 {
+    private conditions = [];
+
     private cfRecordMap : Map<number, CapitalFlowRecordViewObject> = new Map();
 
     constructor(private http: HttpClient,
@@ -23,12 +25,17 @@ export class CfRecordQueryService
     {
     }
 
-    public query() : Observable<CapitalFlowRecordViewObject[]>
+    public query(conditions) : Observable<CapitalFlowRecordViewObject[]>
     {
-        return this.http.get<CapitalFlowRecordViewObject[]>("ef/cfrecord/list")
+        let queryContext = {'conditions' : conditions, 'countPerPage' : 10, 'currentPageNum' : 1};
+
+        return this.http.post<CapitalFlowRecordViewObject[]>("ef/cfrecord/list", queryContext)
         .pipe(
             map(cfRecordVOs => {
-                cfRecordVOs.forEach(cfRecordVO => this.fillingInformation(cfRecordVO)); 
+                cfRecordVOs.forEach(cfRecordVO => this.fillingInformation(cfRecordVO));
+
+                this.conditions = conditions;
+
                 return cfRecordVOs;
             }),
             catchError(this.handleError<CapitalFlowRecordViewObject[]>('query', []))
@@ -97,9 +104,15 @@ export class CfRecordQueryService
         // return of(cfRecordVOs);
     }
 
-    getCfRecord(id: number) : CapitalFlowRecordViewObject 
+    public getCfRecord(id: number) : CapitalFlowRecordViewObject
     {
         return this.cfRecordMap.get(id);
+    }
+
+    public getCfRecords() : CapitalFlowRecordViewObject[]
+    {
+        let cfRecords = Array.from(this.cfRecordMap.values());
+        return cfRecords;
     }
 
     /**
@@ -124,7 +137,7 @@ export class CfRecordQueryService
             {
                 let account = this.accountService.getAccount(cfRecordVO.flowOutAccountId);
                 cfRecordVO.flowOutAccountName = account.name;
-                
+
                 let inExCategory = this.inExCategoryService.getInExCategory(EnumInExType.EXPENSES, cfRecordVO.inExCategoryId);
                 cfRecordVO.inExCategoryName = inExCategory.name;
                 break;
@@ -147,7 +160,7 @@ export class CfRecordQueryService
             cfRecordVO.ownerName = person.name;
         }
 
-        // tag 
+        // tag
         if (cfRecordVO.tagIdList.length > 0)
         {
             cfRecordVO.tagNames = [];
@@ -160,7 +173,7 @@ export class CfRecordQueryService
 
         this.cfRecordMap.set(cfRecordVO.id, cfRecordVO);
     }
-    
+
     /**
      * Handle Http operation that failed.
      * Let the app continue.

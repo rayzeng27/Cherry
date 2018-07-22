@@ -4,24 +4,22 @@ import { CfRecordQueryService } from '../../service/cfrecord-query.service';
 import { EnumInExType } from '../../../../enum/inex-type.enum';
 
 @Component({
-  templateUrl: './cfrecord-list.component.html',
-  styleUrls: ['./cfrecord-list.component.css']
+    templateUrl: './cfrecord-list.component.html',
+    styleUrls: ['./cfrecord-list.component.css']
 })
 export class CfRecordListComponent implements OnInit
 {
-  // 此变量是为了能在html里引用枚举
-  EnumInExType = EnumInExType;
+    // 此变量是为了能在html里引用枚举
+    EnumInExType = EnumInExType;
 
-  cfRecordVOs: CapitalFlowRecordViewObject[];
+    cfRecordVOs: CapitalFlowRecordViewObject[];
 
-  constructor(private cfRecordQueryService: CfRecordQueryService) 
-  {
-  }
+    constructor(private cfRecordQueryService: CfRecordQueryService)
+    {
+    }
 
-  ngOnInit() 
-  {
-    this.cfRecordQueryService.query().subscribe(cfRecordVOs => {
-      this.cfRecordVOs = cfRecordVOs;
-    });
-  }
+    ngOnInit()
+    {
+        this.cfRecordVOs = this.cfRecordQueryService.getCfRecords();
+    }
 }

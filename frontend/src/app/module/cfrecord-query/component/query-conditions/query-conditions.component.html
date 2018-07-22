@@ -1,4 +1,4 @@
-<form [formGroup]="conditionForm">
+<form [formGroup]="conditionForm" (ngSubmit)="query(conditionForm.value)">
     <div nz-row>
         <div nz-col nzSpan="24">
             <nz-card formGroupName="moneyCondition" [nzBodyStyle]="{'padding-top' : '0px', 'padding-bottom' : '0px'}">
@@ -44,8 +44,9 @@
                                        nzMode="tags"
                                        nzPlaceHolder="Please select"
                                        style="width:70%;">
-                                <nz-option [nzLabel]="'Option2-1'" [nzValue]="'Option2-1'"></nz-option>
-                                <nz-option [nzLabel]="'Option2-2'" [nzValue]="'Option2-2'"></nz-option>
+                                <nz-option-group *ngFor="let categoryGroup of categoryGroup" [nzLabel]="categoryGroup.name">
+                                    <nz-option *ngFor="let category of categoryGroup.categories" [nzValue]="category.id" [nzLabel]="category.name"></nz-option>
+                                </nz-option-group>
                             </nz-select>
                         </nz-input-group>
                         <nz-form-explain *ngIf="conditionForm.get('inExCondition').dirty && conditionForm.get('inExCondition').invalid">InEx Error!</nz-form-explain>
@@ -158,7 +159,7 @@
 
     <nz-form-item>
         <nz-form-control [nzOffset]="3" [nzSpan]="8">
-            <button nz-button nzType="primary" [disabled]="conditionForm.invalid" style="width: 100%;">Query</button>
+            <button type="submit" nz-button nzType="primary" [disabled]="conditionForm.invalid" style="width: 100%;">Query</button>
         </nz-form-control>
         <nz-form-control [nzOffset]="2" [nzSpan]="8">
             <button nz-button style="width: 100%;">Reset</button>

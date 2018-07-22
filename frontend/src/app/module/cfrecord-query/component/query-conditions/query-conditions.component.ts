@@ -5,9 +5,15 @@ import { EnumInExType } from '../../../../enum/inex-type.enum';
 import { AccountService } from '../../../../service/account.service';
 import { PersonService } from '../../../../service/person.service';
 import { TagService } from '../../../../service/tag.service';
+import { CfRecordQueryService } from '../../service/cfrecord-query.service';
 import { AccountGroup } from '../../../../entity/account.entity';
 import { Person } from '../../../../entity/person.entity';
 import { Tag } from '../../../../entity/tag.entity';
+import { MoneyCondition, AccountCondition, TagCondition, RecordTimeCondition, OwnerCondition, RemarkCondition, InExCategoryCondition } from '../../../../entity/conditions.entity';
+import { EnumMoneyConditionRangeType } from '../../../../enum/money-condition-range-type.enum';
+import { Router, ActivatedRoute } from '@angular/router';
+import { InExGroup } from '../../../../entity/inex-category.entity';
+import { InExCategoryService } from '../../../../service/inex-category.service';
 
 @Component({
   templateUrl: './query-conditions.component.html',
@@ -24,16 +30,24 @@ export class QueryConditionsComponent implements OnInit
 
     private tags : Tag[] = [];
 
+    private categoryGroup : InExGroup[] = [];
+    private inCategoryGroup : InExGroup[] = [];
+    private exCategoryGroup : InExGroup[] = [];
+
     private conditionForm : FormGroup;
 
     constructor(private fb : FormBuilder,
+                private router : Router,
+                private route : ActivatedRoute,
+                private inExCategoryService : InExCategoryService,
                 private accountService : AccountService,
                 private personService : PersonService,
-                private tagService : TagService) 
+                private tagService : TagService,
+                private cfRecordQueryService: CfRecordQueryService)
     {
     }
 
-    ngOnInit() 
+    ngOnInit()
     {
         this.conditionForm = this.fb.group({
             moneyCondition : this.fb.group({
@@ -77,9 +91,18 @@ export class QueryConditionsComponent implements OnInit
         this.initOwnerConditionUI();
         this.initRemarkConditionUI();
 
+        this.inCategoryGroup = this.inExCategoryService.getInExGroups(EnumInExType.INCOME);
+        this.exCategoryGroup = this.inExCategoryService.getInExGroups(EnumInExType.EXPENSES);
         this.accountGroups = this.accountService.getAccountGroups();
         this.persons = this.personService.getPersons();
         this.tags = this.tagService.getTags();
+    }
+
+    public query(formData) : void
+    {
+        let conditions = this.formData2Conditions(formData);
+        let ob = this.cfRecordQueryService.query(conditions);
+        ob.subscribe(() => {this.router.navigate(['../list'], {relativeTo: this.route});});
     }
 
     private initMoneyConditionUI() : void
@@ -149,6 +172,24 @@ export class QueryConditionsComponent implements OnInit
                 inExCategoriesControl.disable();
             }
         });
+
+        inExTypeControl.valueChanges.subscribe((inExType : EnumInExType) =>{
+            switch(inExType)
+            {
+                case EnumInExType.INCOME:
+                {
+                    this.categoryGroup = this.inCategoryGroup;
+                    break;
+                }
+                case EnumInExType.EXPENSES:
+                {
+                    this.categoryGroup = this.exCategoryGroup;
+                    break;
+                }
+            }
+            inExCategoriesControl.setValue([]);
+        });
+        this.categoryGroup = this.exCategoryGroup;
     }
 
     private initAccountConditionUI() : void
@@ -278,5 +319,93 @@ export class QueryConditionsComponent implements OnInit
                 remarkControl.disable();
             }
         });
+    }
+
+    private formData2Conditions(formData)
+    {
+        let conditions = [];
+        if (formData.moneyCondition.enable)
+        {
+            let upperLimit : number = formData.moneyCondition.upperLimit;
+            let lowerLimit : number = formData.moneyCondition.lowerLimit;
+
+            let condition = new MoneyCondition();
+            conditions.push(condition);
+
+            condition.upperLimit = upperLimit;
+            condition.lowerLimit = lowerLimit;
+
+            if (0 < upperLimit && 0 < lowerLimit)
+            {
+                if (upperLimit == lowerLimit)
+                {
+                    condition.rangeType = EnumMoneyConditionRangeType.QUOTA;
+                }
+                else
+                {
+                    condition.rangeType = EnumMoneyConditionRangeType.RANGE;
+                }
+            }
+            else if (0 < upperLimit)
+            {
+                condition.rangeType = EnumMoneyConditionRangeType.UPPER;
+            }
+            else
+            {
+                condition.rangeType = EnumMoneyConditionRangeType.LOWER;
+            }
+        }
+
+        if (formData.inExCondition.enable)
+        {
+            let condition = new InExCategoryCondition();
+            conditions.push(condition);
+
+            condition.inExType = formData.inExCondition.inExType;
+            condition.categoryIds = formData.inExCondition.inExCategories || [];
+        }
+
+        if (formData.accountCondition.enable)
+        {
+            let condition = new AccountCondition();
+            conditions.push(condition);
+
+            condition.accountIds = formData.accountCondition.accounts;
+        }
+
+        if (formData.tagCondition.enable)
+        {
+            let condition = new TagCondition();
+            conditions.push(condition);
+            
+            condition.tagIds = formData.tagCondition.tags;
+        }
+
+        if (formData.dateTimeCondition.enable)
+        {
+            let condition = new RecordTimeCondition();
+            conditions.push(condition);
+            
+            condition.startDateTime = formData.dateTimeCondition.startDate;
+            condition.endDateTime = formData.dateTimeCondition.endDate;
+        }
+
+        if (formData.ownerCondition.enable)
+        {
+            let condition = new OwnerCondition();
+            conditions.push(condition);
+            
+            condition.ownerIds = formData.ownerCondition.owners;
+        }
+
+        if (formData.remarkCondition.enable)
+        {
+            let condition = new RemarkCondition();
+            conditions.push(condition);
+            
+            condition.keyword = formData.remarkCondition.remark;
+        }
+
+        return conditions;
     }
 }

@@ -103,4 +103,25 @@ export class InExCategoryService
 
         return null;
     }
+
+    public getInExGroups(inExType : EnumInExType) : InExGroup[]
+    {
+        let groups = null;
+
+        switch(inExType)
+        {
+            case EnumInExType.INCOME:
+            {
+                groups = Array.from(this.incomeGroupMap.values());
+                break;
+            }
+            case EnumInExType.EXPENSES:
+            {
+                groups = Array.from(this.expensesGroupMap.values());
+                break;
+            }
+        }
+
+        return groups;
+    }
 }
