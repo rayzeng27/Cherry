@@ -1,19 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, ValidatorFn, ValidationErrors, FormControl } from '@angular/forms';
+import { Router, ActivatedRoute } from '@angular/router';
 
 import { EnumInExType } from '../../../../enum/inex-type.enum';
+
 import { AccountService } from '../../../../service/account.service';
 import { PersonService } from '../../../../service/person.service';
 import { TagService } from '../../../../service/tag.service';
+import { InExCategoryService } from '../../../../service/inex-category.service';
 import { CfRecordQueryService } from '../../service/cfrecord-query.service';
+
 import { AccountGroup } from '../../../../entity/account.entity';
 import { Person } from '../../../../entity/person.entity';
 import { Tag } from '../../../../entity/tag.entity';
-import { MoneyCondition, AccountCondition, TagCondition, RecordTimeCondition, OwnerCondition, RemarkCondition, InExCategoryCondition } from '../../../../entity/conditions.entity';
-import { EnumMoneyConditionRangeType } from '../../../../enum/money-condition-range-type.enum';
-import { Router, ActivatedRoute } from '@angular/router';
 import { InExGroup } from '../../../../entity/inex-category.entity';
-import { InExCategoryService } from '../../../../service/inex-category.service';
+import { MoneyCondition, AccountCondition, TagCondition, RecordTimeCondition, OwnerCondition, RemarkCondition, InExCategoryCondition, EnumMoneyConditionRangeType, QueryRequest } from '../../entity/conditions.entity';
 
 @Component({
   templateUrl: './query-conditions.component.html',
@@ -100,9 +101,9 @@ export class QueryConditionsComponent implements OnInit
 
     public query(formData) : void
     {
-        let conditions = this.formData2Conditions(formData);
-        let ob = this.cfRecordQueryService.query(conditions);
-        ob.subscribe(() => {this.router.navigate(['../list'], {relativeTo: this.route});});
+        let request = this.generateQueryRequest(formData);
+        this.cfRecordQueryService.query(request);
+        this.router.navigate(['../list'], {relativeTo: this.route});
     }
 
     private initMoneyConditionUI() : void
@@ -321,16 +322,16 @@ export class QueryConditionsComponent implements OnInit
         });
     }
 
-    private formData2Conditions(formData)
+    private generateQueryRequest(formData) : QueryRequest
     {
-        let conditions = [];
+        let request = new QueryRequest();
         if (formData.moneyCondition.enable)
         {
             let upperLimit : number = formData.moneyCondition.upperLimit;
             let lowerLimit : number = formData.moneyCondition.lowerLimit;
 
             let condition = new MoneyCondition();
-            conditions.push(condition);
+            request.moneyCondition = condition;
 
             condition.upperLimit = upperLimit;
             condition.lowerLimit = lowerLimit;
@@ -359,32 +360,32 @@ export class QueryConditionsComponent implements OnInit
         if (formData.inExCondition.enable)
         {
             let condition = new InExCategoryCondition();
-            conditions.push(condition);
+            request.inExCategoryCondition = condition;
 
             condition.inExType = formData.inExCondition.inExType;
-            condition.categoryIds = formData.inExCondition.inExCategories || [];
+            condition.categoryIdSet = formData.inExCondition.inExCategories || [];
         }
 
         if (formData.accountCondition.enable)
         {
             let condition = new AccountCondition();
-            conditions.push(condition);
+            request.accountCondition = condition;
 
-            condition.accountIds = formData.accountCondition.accounts;
+            condition.accIdSet = formData.accountCondition.accounts;
         }
 
         if (formData.tagCondition.enable)
         {
             let condition = new TagCondition();
-            conditions.push(condition);
+            request.tagCondition = condition;
             
-            condition.tagIds = formData.tagCondition.tags;
+            condition.tagIdSet = formData.tagCondition.tags;
         }
 
         if (formData.dateTimeCondition.enable)
         {
             let condition = new RecordTimeCondition();
-            conditions.push(condition);
+            request.recordTimeCondition = condition;
             
             condition.startDateTime = formData.dateTimeCondition.startDate;
             condition.endDateTime = formData.dateTimeCondition.endDate;
@@ -393,19 +394,19 @@ export class QueryConditionsComponent implements OnInit
         if (formData.ownerCondition.enable)
         {
             let condition = new OwnerCondition();
-            conditions.push(condition);
+            request.ownerCondition = condition;
             
-            condition.ownerIds = formData.ownerCondition.owners;
+            condition.ownerIdSet = formData.ownerCondition.owners;
         }
 
         if (formData.remarkCondition.enable)
         {
             let condition = new RemarkCondition();
-            conditions.push(condition);
+            request.remarkCondition = condition;
             
             condition.keyword = formData.remarkCondition.remark;
         }
 
-        return conditions;
+        return request;
     }
 }

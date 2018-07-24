@@ -1,28 +1,40 @@
-<nz-table #nzTable [nzData]="cfRecordVOs" [nzShowPagination]="false">
-    <tbody>
-        <ng-template ngFor let-cfRecordVO [ngForOf]="nzTable.data">
-            <tr [ngClass]="{'row-income' : cfRecordVO.inExType == EnumInExType.INCOME, 'row-expenses' : cfRecordVO.inExType == EnumInExType.EXPENSES}">
-                <td class="thin-padding">
-                    <table>
-                        <tr>
-                            <td style="padding:0px 3px; border:none;">{{cfRecordVO.recordDateTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
-                            <td style="padding:0px 3px; border:none;" class="align-right money" rowspan="2">{{cfRecordVO.localMoney | number:'1.2-2'}}</td>
-                            <td style="padding:0px 3px; border:none; width:24px; font-size:20px;" rowspan="2"><a routerLink="../detail/{{cfRecordVO.id}}"><i class="anticon anticon-right-circle-o"></i></a></td>
-                        </tr>
-                        <tr [ngSwitch]="cfRecordVO.inExType">
-                            <td *ngSwitchCase="EnumInExType.INCOME"   style="padding:0px 3px; border:none;"><span class="account">{{cfRecordVO.flowInAccountName}}  <nz-tag nzColor="green">{{cfRecordVO.inExCategoryName}}</nz-tag></span></td>
-                            <td *ngSwitchCase="EnumInExType.EXPENSES" style="padding:0px 3px; border:none;"><span class="account">{{cfRecordVO.flowOutAccountName}} <nz-tag nzColor="red">{{cfRecordVO.inExCategoryName}}</nz-tag></span></td>
-                            <td *ngSwitchCase="EnumInExType.NONE"     style="padding:0px 3px; border:none;"><span class="account">{{cfRecordVO.flowOutAccountName}} <i class="anticon anticon-arrow-right"></i> {{cfRecordVO.flowInAccountName}}</span></td>
-                        </tr>
-                        <tr>
-                        <td colspan="3" style="padding:0px">
-                            <ng-container *ngIf="'' != cfRecordVO.remark">{{cfRecordVO.remark}}</ng-container>
-                            <ng-container *ngIf="'' == cfRecordVO.remark"><span style="color:gray">无备注</span></ng-container>
-                        </td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
-        </ng-template>
-    </tbody>
-</nz-table>
+<div style="padding-bottom:60px;">
+    <nz-table #nzTable [nzData]="queryResponse.cfRecordList" [nzShowPagination]="false">
+        <tbody>
+            <ng-template ngFor let-cfRecordVO [ngForOf]="nzTable.data">
+                <tr [ngClass]="{'row-income' : cfRecordVO.inExType == EnumInExType.INCOME, 'row-expenses' : cfRecordVO.inExType == EnumInExType.EXPENSES}">
+                    <td class="thin-padding">
+                        <table>
+                            <tr>
+                                <td style="padding:0px 3px; border:none;">{{cfRecordVO.recordDateTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                                <td style="padding:0px 3px; border:none;" class="align-right money" rowspan="2">{{cfRecordVO.localMoney | number:'1.2-2'}}</td>
+                                <td style="padding:0px 3px; border:none; width:24px; font-size:20px;" rowspan="2"><a routerLink="../detail/{{cfRecordVO.id}}"><i class="anticon anticon-right-circle-o"></i></a></td>
+                            </tr>
+                            <tr [ngSwitch]="cfRecordVO.inExType">
+                                <td *ngSwitchCase="EnumInExType.INCOME"   style="padding:0px 3px; border:none;"><span class="account">{{cfRecordVO.flowInAccountName}}  <nz-tag nzColor="green">{{cfRecordVO.inExCategoryName}}</nz-tag></span></td>
+                                <td *ngSwitchCase="EnumInExType.EXPENSES" style="padding:0px 3px; border:none;"><span class="account">{{cfRecordVO.flowOutAccountName}} <nz-tag nzColor="red">{{cfRecordVO.inExCategoryName}}</nz-tag></span></td>
+                                <td *ngSwitchCase="EnumInExType.NONE"     style="padding:0px 3px; border:none;"><span class="account">{{cfRecordVO.flowOutAccountName}} <i class="anticon anticon-arrow-right"></i> {{cfRecordVO.flowInAccountName}}</span></td>
+                            </tr>
+                            <tr>
+                                <td colspan="3" style="padding:0px; border:none;">
+                                    <ng-container *ngIf="'' != cfRecordVO.remark">{{cfRecordVO.remark}}</ng-container>
+                                    <ng-container *ngIf="'' == cfRecordVO.remark"><span style="color:gray">无备注</span></ng-container>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </ng-template>
+        </tbody>
+    </nz-table>
+</div>
+<div nz-row style="position:fixed; left:0; bottom:0; width:100%; padding:10px 0px; border-top:1px solid #e8e8e8; background-color:white;">
+    <span nz-col nzOffset="3" nzSpan="8"><button nz-button nzType="primary" style="width:100%">Condition</button></span>
+    <span nz-col nzOffset="2">
+    <nz-button-group>
+        <button nz-button [disabled]="!queryResponse.previousPageEnable"><i class="anticon anticon-left"></i></button>
+        <button nz-button nzType="default" disabled>{{queryResponse.currentPageNum}} / {{queryResponse.totalPageCount}}</button>
+        <button nz-button [disabled]="!queryResponse.nextPageEnable"><i class="anticon anticon-right"></i></button>
+    </nz-button-group>
+    </span>
+</div>

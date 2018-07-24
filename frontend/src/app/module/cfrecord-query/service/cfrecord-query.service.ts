@@ -1,19 +1,26 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
-import { Observable, of } from 'rxjs';
+import { Observable, of, Subject } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
-import { CapitalFlowRecordViewObject } from '../../../entity/capital-flow-record.entity';
 import { EnumInExType } from '../../../enum/inex-type.enum';
+import { CapitalFlowRecordViewObject } from '../../../entity/capital-flow-record.entity';
 import { AccountService } from '../../../service/account.service';
 import { InExCategoryService } from '../../../service/inex-category.service';
 import { PersonService } from '../../../service/person.service';
 import { TagService } from '../../../service/tag.service';
+import { QueryRequest, QueryResponse } from '../entity/conditions.entity';
 
 @Injectable()
 export class CfRecordQueryService
 {
-    private conditions = [];
+    private request : QueryRequest;
+
+    private response : QueryResponse;
+
+    private status = EnumQueryStatus.NOT_QUERY_YET;
+
+    private subject = new Subject<QueryResponse>();
 
     private cfRecordMap : Map<number, CapitalFlowRecordViewObject> = new Map();
 
@@ -23,23 +30,24 @@ export class CfRecordQueryService
                 private personService : PersonService,
                 private tagService : TagService)
     {
+        this.subject.subscribe(()=>{this.status = EnumQueryStatus.QUERIED;});
     }
 
-    public query(conditions) : Observable<CapitalFlowRecordViewObject[]>
+    public query(request : QueryRequest) : void
     {
-        let queryContext = {'conditions' : conditions, 'countPerPage' : 10, 'currentPageNum' : 1};
-
-        return this.http.post<CapitalFlowRecordViewObject[]>("ef/cfrecord/list", queryContext)
+        this.status = EnumQueryStatus.QUERYING;
+        this.http.post<QueryResponse>("ef/cfrecord/list", request)
         .pipe(
-            map(cfRecordVOs => {
-                cfRecordVOs.forEach(cfRecordVO => this.fillingInformation(cfRecordVO));
+            map(response => {
+                response.cfRecordList.forEach(cfRecordVO => this.fillingInformation(cfRecordVO));
 
-                this.conditions = conditions;
+                this.request = request;
+                this.response = response;
 
-                return cfRecordVOs;
+                return response;
             }),
-            catchError(this.handleError<CapitalFlowRecordViewObject[]>('query', []))
-        );
+            catchError(this.handleError<QueryResponse>('query', {totalCount:0, countPerPage:10, currentPageNum:0, totalPageCount:0, previousPageEnable:false, nextPageEnable:false, cfRecordList:[]}))
+        ).subscribe(this.subject);
 
         // let cfRecordVOs : CapitalFlowRecordViewObject[] = [];
         // cfRecordVOs[0] = new CapitalFlowRecordViewObject();
@@ -104,15 +112,24 @@ export class CfRecordQueryService
         // return of(cfRecordVOs);
     }
 
+    public getStatus() : EnumQueryStatus
+    {
+        return this.status;
+    }
+
+    public getSubject() : Subject<QueryResponse>
+    {
+        return this.subject;
+    }
+
+    public getResponse() : QueryResponse
+    {
+        return this.response;
+    }
+
     public getCfRecord(id: number) : CapitalFlowRecordViewObject
     {
         return this.cfRecordMap.get(id);
-    }
-
-    public getCfRecords() : CapitalFlowRecordViewObject[]
-    {
-        let cfRecords = Array.from(this.cfRecordMap.values());
-        return cfRecords;
     }
 
     /**
@@ -194,4 +211,13 @@ export class CfRecordQueryService
             return of(result as T);
       };
     }
+}
+
+export enum EnumQueryStatus
+{
+    NOT_QUERY_YET,
+
+    QUERYING,
+
+    QUERIED
 }
