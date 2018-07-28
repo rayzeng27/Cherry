@@ -9,11 +9,14 @@ import { AccountService } from '../../../service/account.service';
 import { InExCategoryService } from '../../../service/inex-category.service';
 import { PersonService } from '../../../service/person.service';
 import { TagService } from '../../../service/tag.service';
-import { QueryRequest, QueryResponse } from '../entity/conditions.entity';
+import { MoneyCondition, AccountCondition, TagCondition, RecordTimeCondition, OwnerCondition, RemarkCondition, InExCategoryCondition, ConditionFormData, EnumMoneyConditionRangeType, QueryRequest, QueryResponse } from '../entity/conditions.entity';
+
 
 @Injectable()
 export class CfRecordQueryService
 {
+    private conditionFormData : ConditionFormData;
+
     private request : QueryRequest;
 
     private response : QueryResponse;
@@ -24,7 +27,7 @@ export class CfRecordQueryService
 
     private cfRecordMap : Map<number, CapitalFlowRecordViewObject> = new Map();
 
-    constructor(private http: HttpClient,
+    constructor(private http : HttpClient,
                 private accountService : AccountService,
                 private inExCategoryService : InExCategoryService,
                 private personService : PersonService,
@@ -33,7 +36,53 @@ export class CfRecordQueryService
         this.subject.subscribe(()=>{this.status = EnumQueryStatus.QUERIED;});
     }
 
-    public query(request : QueryRequest) : void
+    public nextPage() : void
+    {
+       let newRequest = Object.assign({}, this.request);
+       newRequest.currentPageNum = this.response.currentPageNum + 1;
+       this.doQuery(newRequest);
+    }
+
+    public prevPage() : void
+    {
+       let newRequest = Object.assign({}, this.request);
+       newRequest.currentPageNum = this.response.currentPageNum - 1;
+       this.doQuery(newRequest);
+    }
+
+    public getStatus(): EnumQueryStatus 
+    {
+        return this.status;
+    }
+
+    public getSubject() : Subject<QueryResponse>
+    {
+        return this.subject;
+    }
+
+    public getResponse() : QueryResponse
+    {
+        return this.response;
+    }
+
+    public getCfRecord(id: number) : CapitalFlowRecordViewObject
+    {
+        return this.cfRecordMap.get(id);
+    }
+
+    public getConditionFormData() : ConditionFormData
+    {
+        return this.conditionFormData;
+    }
+
+    public query(conditionFormData : ConditionFormData) : void
+    {
+        let request = this.generateQueryRequest(conditionFormData);
+        this.conditionFormData = conditionFormData;
+        this.doQuery(request);
+    }
+
+    private doQuery(request : QueryRequest) : void
     {
         this.status = EnumQueryStatus.QUERYING;
         this.http.post<QueryResponse>("ef/cfrecord/list", request)
@@ -46,8 +95,8 @@ export class CfRecordQueryService
 
                 return response;
             }),
-            catchError(this.handleError<QueryResponse>('query', {totalCount:0, countPerPage:10, currentPageNum:0, totalPageCount:0, previousPageEnable:false, nextPageEnable:false, cfRecordList:[]}))
-        ).subscribe(this.subject);
+            catchError(this.handleError<QueryResponse>('query', {totalCount:0, countPerPage:10, currentPageNum:0, totalPageCount:0, startIndex:0, endIndex:0, previousPageEnable:false, nextPageEnable:false, cfRecordList:[]}))
+        ).subscribe((response)=>{this.subject.next(response)});
 
         // let cfRecordVOs : CapitalFlowRecordViewObject[] = [];
         // cfRecordVOs[0] = new CapitalFlowRecordViewObject();
@@ -112,24 +161,92 @@ export class CfRecordQueryService
         // return of(cfRecordVOs);
     }
 
-    public getStatus() : EnumQueryStatus
+    private generateQueryRequest(conditionFormData : ConditionFormData) : QueryRequest
     {
-        return this.status;
-    }
+        let request = new QueryRequest();
+        if (conditionFormData.moneyCondition.enable)
+        {
+            let upperLimit : number = conditionFormData.moneyCondition.upperLimit;
+            let lowerLimit : number = conditionFormData.moneyCondition.lowerLimit;
 
-    public getSubject() : Subject<QueryResponse>
-    {
-        return this.subject;
-    }
+            let condition = new MoneyCondition();
+            request.moneyCondition = condition;
 
-    public getResponse() : QueryResponse
-    {
-        return this.response;
-    }
+            condition.upperLimit = upperLimit;
+            condition.lowerLimit = lowerLimit;
 
-    public getCfRecord(id: number) : CapitalFlowRecordViewObject
-    {
-        return this.cfRecordMap.get(id);
+            if (0 < upperLimit && 0 < lowerLimit)
+            {
+                if (upperLimit == lowerLimit)
+                {
+                    condition.rangeType = EnumMoneyConditionRangeType.QUOTA;
+                }
+                else
+                {
+                    condition.rangeType = EnumMoneyConditionRangeType.RANGE;
+                }
+            }
+            else if (0 < upperLimit)
+            {
+                condition.rangeType = EnumMoneyConditionRangeType.UPPER;
+            }
+            else
+            {
+                condition.rangeType = EnumMoneyConditionRangeType.LOWER;
+            }
+        }
+
+        if (conditionFormData.inExCondition.enable)
+        {
+            let condition = new InExCategoryCondition();
+            request.inExCategoryCondition = condition;
+
+            condition.inExType = conditionFormData.inExCondition.inExType;
+            condition.categoryIdSeries = (conditionFormData.inExCondition.inExCategories || []).toString();
+        }
+
+        if (conditionFormData.accountCondition.enable)
+        {
+            let condition = new AccountCondition();
+            request.accountCondition = condition;
+
+            condition.accIdSeries = conditionFormData.accountCondition.accounts.toString();
+        }
+
+        if (conditionFormData.tagCondition.enable)
+        {
+            let condition = new TagCondition();
+            request.tagCondition = condition;
+            
+            condition.tagIdSeries = conditionFormData.tagCondition.tags.toString();
+        }
+
+        if (conditionFormData.dateTimeCondition.enable)
+        {
+            let condition = new RecordTimeCondition();
+            request.recordTimeCondition = condition;
+            
+            condition.startDateTime = conditionFormData.dateTimeCondition.startDate;
+            condition.endDateTime = conditionFormData.dateTimeCondition.endDate;
+        }
+
+        if (conditionFormData.ownerCondition.enable)
+        {
+            let condition = new OwnerCondition();
+            request.ownerCondition = condition;
+            
+            condition.ownerIdSeries = conditionFormData.ownerCondition.owners.toString();
+        }
+
+        if (conditionFormData.remarkCondition.enable)
+        {
+            let condition = new RemarkCondition();
+            request.remarkCondition = condition;
+            
+            condition.keyword = conditionFormData.remarkCondition.remark;
+        }
+
+        return request;
     }
 
     /**

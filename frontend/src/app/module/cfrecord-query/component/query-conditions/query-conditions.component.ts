@@ -8,13 +8,12 @@ import { AccountService } from '../../../../service/account.service';
 import { PersonService } from '../../../../service/person.service';
 import { TagService } from '../../../../service/tag.service';
 import { InExCategoryService } from '../../../../service/inex-category.service';
-import { CfRecordQueryService } from '../../service/cfrecord-query.service';
+import { CfRecordQueryService, EnumQueryStatus } from '../../service/cfrecord-query.service';
 
 import { AccountGroup } from '../../../../entity/account.entity';
 import { Person } from '../../../../entity/person.entity';
 import { Tag } from '../../../../entity/tag.entity';
 import { InExGroup } from '../../../../entity/inex-category.entity';
-import { MoneyCondition, AccountCondition, TagCondition, RecordTimeCondition, OwnerCondition, RemarkCondition, InExCategoryCondition, EnumMoneyConditionRangeType, QueryRequest } from '../../entity/conditions.entity';
 
 @Component({
   templateUrl: './query-conditions.component.html',
@@ -39,7 +38,6 @@ export class QueryConditionsComponent implements OnInit
 
     constructor(private fb : FormBuilder,
                 private router : Router,
-                private route : ActivatedRoute,
                 private inExCategoryService : InExCategoryService,
                 private accountService : AccountService,
                 private personService : PersonService,
@@ -97,13 +95,19 @@ export class QueryConditionsComponent implements OnInit
         this.accountGroups = this.accountService.getAccountGroups();
         this.persons = this.personService.getPersons();
         this.tags = this.tagService.getTags();
+
+        if (EnumQueryStatus.QUERIED == this.cfRecordQueryService.getStatus())
+        {
+            let conditionFormData = this.cfRecordQueryService.getConditionFormData();
+            this.conditionForm.setValue(conditionFormData);
+        }
     }
 
-    public query(formData) : void
+    public query() : void
     {
-        let request = this.generateQueryRequest(formData);
-        this.cfRecordQueryService.query(request);
-        this.router.navigate(['../list'], {relativeTo: this.route});
+        let conditionFormData = this.conditionForm.getRawValue();
+        this.cfRecordQueryService.query(conditionFormData);
+        this.router.navigate(['/query-cfrecords/list']);
     }
 
     private initMoneyConditionUI() : void
@@ -320,93 +324,5 @@ export class QueryConditionsComponent implements OnInit
                 remarkControl.disable();
             }
         });
-    }
-
-    private generateQueryRequest(formData) : QueryRequest
-    {
-        let request = new QueryRequest();
-        if (formData.moneyCondition.enable)
-        {
-            let upperLimit : number = formData.moneyCondition.upperLimit;
-            let lowerLimit : number = formData.moneyCondition.lowerLimit;
-
-            let condition = new MoneyCondition();
-            request.moneyCondition = condition;
-
-            condition.upperLimit = upperLimit;
-            condition.lowerLimit = lowerLimit;
-
-            if (0 < upperLimit && 0 < lowerLimit)
-            {
-                if (upperLimit == lowerLimit)
-                {
-                    condition.rangeType = EnumMoneyConditionRangeType.QUOTA;
-                }
-                else
-                {
-                    condition.rangeType = EnumMoneyConditionRangeType.RANGE;
-                }
-            }
-            else if (0 < upperLimit)
-            {
-                condition.rangeType = EnumMoneyConditionRangeType.UPPER;
-            }
-            else
-            {
-                condition.rangeType = EnumMoneyConditionRangeType.LOWER;
-            }
-        }
-
-        if (formData.inExCondition.enable)
-        {
-            let condition = new InExCategoryCondition();
-            request.inExCategoryCondition = condition;
-
-            condition.inExType = formData.inExCondition.inExType;
-            condition.categoryIdSet = formData.inExCondition.inExCategories || [];
-        }
-
-        if (formData.accountCondition.enable)
-        {
-            let condition = new AccountCondition();
-            request.accountCondition = condition;
-
-            condition.accIdSet = formData.accountCondition.accounts;
-        }
-
-        if (formData.tagCondition.enable)
-        {
-            let condition = new TagCondition();
-            request.tagCondition = condition;
-            
-            condition.tagIdSet = formData.tagCondition.tags;
-        }
-
-        if (formData.dateTimeCondition.enable)
-        {
-            let condition = new RecordTimeCondition();
-            request.recordTimeCondition = condition;
-            
-            condition.startDateTime = formData.dateTimeCondition.startDate;
-            condition.endDateTime = formData.dateTimeCondition.endDate;
-        }
-
-        if (formData.ownerCondition.enable)
-        {
-            let condition = new OwnerCondition();
-            request.ownerCondition = condition;
-            
-            condition.ownerIdSet = formData.ownerCondition.owners;
-        }
-
-        if (formData.remarkCondition.enable)
-        {
-            let condition = new RemarkCondition();
-            request.remarkCondition = condition;
-            
-            condition.keyword = formData.remarkCondition.remark;
-        }
-
-        return request;
     }
 }

@@ -1,6 +1,5 @@
-<form nz-form nzLayout="vertical" [ngSwitch]="cfRecordVO.inExType">
+<form nz-form nzLayout="vertical" [ngSwitch]="cfRecordVO.inExType" style="padding-bottom:60px;">
     <div nz-row>
-        <div nz-col nzSpan="12"><a routerLink="../../list">返回</a></div>
         <div nz-col nzSpan="12" class="big-money">{{cfRecordVO.localMoney | number:'1.2-2'}}</div>
     </div>
     <div nz-row *ngSwitchCase="EnumInExType.INCOME">
@@ -92,3 +91,8 @@
         </div>
     </div>
 </form>
+<div nz-row style="position:fixed; left:0; bottom:0; width:100%; padding:10px 0px; border-top:1px solid #e8e8e8; background-color:white;">
+    <span nz-col nzOffset="4" nzSpan="16">
+        <button nz-button nzType="primary" (click)="backToList()" style="width: 100%;">Back to List</button>
+    </span>
+</div>

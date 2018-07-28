@@ -1,10 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { CapitalFlowRecordViewObject } from '../../../../entity/capital-flow-record.entity';
+import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
+
 import { CfRecordQueryService, EnumQueryStatus } from '../../service/cfrecord-query.service';
 import { EnumInExType } from '../../../../enum/inex-type.enum';
 import { QueryResponse } from '../../entity/conditions.entity';
-import { Router, ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs';
 
 @Component({
     templateUrl: './cfrecord-list.component.html',
@@ -20,7 +20,6 @@ export class CfRecordListComponent implements OnInit, OnDestroy
     subscription : Subscription;
 
     constructor(private router : Router,
-                private route : ActivatedRoute,
                 private cfRecordQueryService: CfRecordQueryService)
     {
     }
@@ -39,5 +38,20 @@ export class CfRecordListComponent implements OnInit, OnDestroy
     ngOnDestroy()
     {
         this.subscription && this.subscription.unsubscribe();
+    }
+
+    prevPage()
+    {
+        this.cfRecordQueryService.prevPage();
+    }
+
+    nextPage()
+    {
+        this.cfRecordQueryService.nextPage();
+    }
+
+    gotoCondition()
+    {
+        this.router.navigate(['/query-cfrecords/conditions']);
     }
 }

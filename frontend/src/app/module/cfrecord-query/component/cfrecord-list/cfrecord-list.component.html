@@ -29,12 +29,12 @@
     </nz-table>
 </div>
 <div nz-row style="position:fixed; left:0; bottom:0; width:100%; padding:10px 0px; border-top:1px solid #e8e8e8; background-color:white;">
-    <span nz-col nzOffset="3" nzSpan="8"><button nz-button nzType="primary" style="width:100%">Condition</button></span>
-    <span nz-col nzOffset="2">
+    <span nz-col nzOffset="1" nzSpan="3"><button nz-button nzType="primary" nzShape="circle" (click)="gotoCondition()"><i class="anticon anticon-search"></i></button></span>
+    <span nz-col nzOffset="1" nzSpan="18" style="text-align:right"><span style="margin-right:10px">{{queryResponse.startIndex | number}} - {{queryResponse.endIndex | number}} of {{queryResponse.totalCount | number}}</span>
     <nz-button-group>
-        <button nz-button [disabled]="!queryResponse.previousPageEnable"><i class="anticon anticon-left"></i></button>
+        <button nz-button [disabled]="!queryResponse.previousPageEnable" (click)="prevPage()"><i class="anticon anticon-left"></i></button>
         <button nz-button nzType="default" disabled>{{queryResponse.currentPageNum}} / {{queryResponse.totalPageCount}}</button>
-        <button nz-button [disabled]="!queryResponse.nextPageEnable"><i class="anticon anticon-right"></i></button>
+        <button nz-button [disabled]="!queryResponse.nextPageEnable" (click)="nextPage()"><i class="anticon anticon-right"></i></button>
     </nz-button-group>
     </span>
 </div>

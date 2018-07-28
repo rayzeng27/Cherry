@@ -10,23 +10,23 @@ export class MoneyCondition
 
 export class AccountCondition
 {
-    accIdSet : number[];
+    accIdSeries : string;
 }
 
 export class InExCategoryCondition
 {
     inExType : EnumInExType;
-    categoryIdSet : number[];
+    categoryIdSeries : string;
 }
 
 export class TagCondition
 {
-    tagIdSet : number[];
+    tagIdSeries : string;
 }
 
 export class OwnerCondition
 {
-    ownerIdSet : number[];
+    ownerIdSeries : string;
 }
 
 export class RecordTimeCondition
@@ -55,6 +55,17 @@ export enum EnumMoneyConditionRangeType
     RANGE = "RANGE"
 }
 
+export class ConditionFormData
+{
+    moneyCondition :    { enable : false, lowerLimit : 0, upperLimit : 0 };
+    inExCondition :     { enable : false, inExType : EnumInExType.EXPENSES, inExCategories : number[]};
+    accountCondition :  { enable : false, accounts : number[] };
+    tagCondition :      { enable : false, tags : number[] };
+    dateTimeCondition : { enable : false, startDate : null, endDate : null };
+    ownerCondition :    { enable : false, owners : number[] };
+    remarkCondition :   { enable : false, remark : "" }
+}
+
 export class QueryRequest
 {
     countPerPage : number = 10;
@@ -72,6 +83,8 @@ export class QueryRequest
 export class QueryResponse
 {
     totalCount : number = 0;
+    startIndex : number = 0;
+    endIndex : number = 0;
     countPerPage : number = 0;
     currentPageNum : number = 0;
     totalPageCount : number = 0;

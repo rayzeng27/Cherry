@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { EnumInExType } from '../../../../enum/inex-type.enum';
 import { CapitalFlowRecordViewObject } from '../../../../entity/capital-flow-record.entity';
@@ -17,7 +17,8 @@ export class CfRecordDetailComponent implements OnInit
 
     cfRecordVO: CapitalFlowRecordViewObject;
 
-    constructor(private route : ActivatedRoute,
+    constructor(private router : Router,
+                private route : ActivatedRoute,
                 private cfRecordQueryService: CfRecordQueryService) 
     {
     }
@@ -56,5 +57,10 @@ export class CfRecordDetailComponent implements OnInit
         // this.cfRecordVO.inExCategoryName = "";
         // this.cfRecordVO.ownerName = "小李";
         // this.cfRecordVO.tagNames = ["游泳", "滑雪", "爬山"];
+    }
+
+    backToList()
+    {
+        this.router.navigate(['/query-cfrecords/list']);
     }
 }
