@@ -9,13 +9,15 @@ import { CfRecordDetailComponent } from './component/cfrecord-detail/cfrecord-de
 import { QueryConditionsComponent } from './component/query-conditions/query-conditions.component';
 import { CfRecordQueryService } from './service/cfrecord-query.service';
 import { CfRecordQueryRoutingModule } from './cfrecord-query-routing.module';
+import { AccountSelectComponent } from '../../component/account-select/account-select.component';
 
 @NgModule({
     declarations: [
         CfRecordQueryComponent,
         QueryConditionsComponent,
         CfRecordListComponent,
-        CfRecordDetailComponent
+        CfRecordDetailComponent,
+        AccountSelectComponent
     ],
     imports: [
         CommonModule,

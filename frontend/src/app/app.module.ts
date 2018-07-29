@@ -1,4 +1,5 @@
 import { NgModule, APP_INITIALIZER } from '@angular/core';
+import { AppRoutingModule } from './/app-routing.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
@@ -10,8 +11,8 @@ import { NgZorroAntdModule, NZ_I18N, en_US } from 'ng-zorro-antd';
 
 import { AppComponent } from './app.component';
 import { BookkeepingComponent } from './component/bookkeeping/bookkeeping.component';
+
 import { StartupService } from './service/startup.service';
-import { AppRoutingModule } from './/app-routing.module';
 
 registerLocaleData(en);
 

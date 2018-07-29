@@ -1,0 +1,19 @@
+<div class="ef-accountselect-selection" (click)="showModal()">
+记账！
+</div>
+<nz-modal [(nzVisible)]="modalVisible" nzTitle="The first Modal" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
+    <nz-input-group nzSuffixIcon="anticon anticon-search" style="margin-bottom: 15px">
+        <input type="text" nz-input placeholder="input search text">
+    </nz-input-group>
+    <ul class="ef-accountselect-selection-list">
+        <li class="ef-accountselect-selection-list-item-group" *ngFor="let group of groups">
+            <div class="ef-accountselect-selection-list-item-group-title">{{group.name}}</div>
+            <ul class="ef-accountselect-selection-list-item-group-list">
+                <li *ngFor="let account of group.accounts"
+                    class="ef-accountselect-selection-list-item"
+                    [ngClass]="{'selected' : account.selected, 'no-selected' : !account.selected}"
+                    (click)="clickAccount(account)">{{account.name}}</li>
+            </ul>
+        </li>
+    </ul>
+</nz-modal>

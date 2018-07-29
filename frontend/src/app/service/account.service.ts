@@ -26,20 +26,19 @@ export class AccountService
                     groups.forEach(group => {
                         this.groupMap.set(group.id, group);
                     });
+                    // add default group for no-group account
+                    this.groupMap.set(0, {id:0, name:"默认分组", accounts:[]});
     
                     accounts.forEach(account => {
                         this.accountMap.set(account.id, account);
     
                         // add account to group
-                        if (account.groupId > 0)
+                        let group = this.groupMap.get(account.groupId);
+                        if (null == group.accounts)
                         {
-                            let group = this.groupMap.get(account.groupId);
-                            if (null == group.accounts)
-                            {
-                                group.accounts = [];
-                            }
-                            group.accounts.push(account);
+                            group.accounts = [];
                         }
+                        group.accounts.push(account);
                     });
 
                     return true;
