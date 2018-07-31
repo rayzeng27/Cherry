@@ -1,17 +1,28 @@
-import { Component, OnInit } from '@angular/core';
-import { ControlValueAccessor } from '@angular/forms';
+import { Component, OnInit, forwardRef, Input } from '@angular/core';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { AccountService } from '../../service/account.service';
 import { Account } from '../../entity/account.entity';
+import { toBoolean } from 'ng-zorro-antd/src/core/util/convert';
 
 @Component({
   selector: 'ef-account-select',
+  providers : [
+    {
+      provide    : NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => AccountSelectComponent),
+      multi      : true
+    }
+  ],
   templateUrl: './account-select.component.html',
   styleUrls: ['./account-select.component.css']
 })
 export class AccountSelectComponent implements OnInit, ControlValueAccessor
 {
+    private _disabled = false;
+
+    onChange: (value: number[]) => void = () => {};
+
     groups : InnerAccountGroup[] = []; 
-    accountIds : number[] = [];
     modalVisible = false;
 
     selectedAccounts : SelectableAccount[] = [];
@@ -42,7 +53,23 @@ export class AccountSelectComponent implements OnInit, ControlValueAccessor
 
     showModal(): void 
     {
-        this.modalSelectedAccounts = this.selectedAccounts;
+        if (this.efDisabled)
+        {
+            return;
+        }
+
+        this.modalSelectedAccounts = [];
+
+        let accountIds : number[] = [];
+        this.selectedAccounts.forEach(account => {accountIds.push(account.id)});
+
+        this.groups.forEach(group => {
+            group.accounts.forEach(account => {
+                account.selected = accountIds.includes(account.id);
+                account.selected && this.modalSelectedAccounts.push(account);
+            });
+        });
+
         this.modalVisible = true;
     }
 
@@ -67,11 +94,31 @@ export class AccountSelectComponent implements OnInit, ControlValueAccessor
             }
         }
     }
+
+    deleteTag(account : SelectableAccount, i : number)
+    {
+        account.selected = false;
+        this.modalSelectedAccounts.splice(i, 1);
+    }
+
+    deselectAll()
+    {
+        this.modalSelectedAccounts.forEach(account => {account.selected = false;});
+        this.modalSelectedAccounts = [];
+    }
     
     handleOk(): void 
     {
-        this.selectedAccounts = this.modalSelectedAccounts;
+        this.selectedAccounts = [];
         this.modalVisible = false;
+
+        let accountIds : number[] = [];
+        this.modalSelectedAccounts.forEach(account => {
+            this.selectedAccounts.push(Object.assign({}, account));
+            accountIds.push(account.id);
+        });
+
+        this.onChange(accountIds);
     }
     
     handleCancel(): void 
@@ -79,24 +126,50 @@ export class AccountSelectComponent implements OnInit, ControlValueAccessor
         this.modalVisible = false;
     }
 
-    writeValue(obj: any): void
+    writeValue(accountIds: number[]): void
     {
-        throw new Error("Method not implemented.");
+        this.selectedAccounts.forEach(account => {account.selected = false});
+        this.selectedAccounts = [];
+
+        if (null == accountIds || 0 == accountIds.length)
+        {
+            return;
+        }
+
+        this.groups.forEach(group => {
+            group.accounts.forEach(account => {
+                if (accountIds.includes(account.id))
+                {
+                    account.selected = true;
+                    this.selectedAccounts.push(account);
+                }
+            });
+        });
     }
 
-    registerOnChange(fn: any): void
+    registerOnChange(fn: (value: number[]) => void): void
     {
-        throw new Error("Method not implemented.");
+        this.onChange = fn;
     }
 
     registerOnTouched(fn: any): void
     {
-        throw new Error("Method not implemented.");
     }
 
-    setDisabledState?(isDisabled: boolean): void
+    setDisabledState?(isDisabled : boolean): void
     {
-        throw new Error("Method not implemented.");
+        this._disabled = isDisabled;
+    }
+
+    @Input()
+    set efDisabled(value: boolean) 
+    {
+      this._disabled = toBoolean(value);
+    }
+  
+    get efDisabled(): boolean 
+    {
+      return this._disabled;
     }
 }
 

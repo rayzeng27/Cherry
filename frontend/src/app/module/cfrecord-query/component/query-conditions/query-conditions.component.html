@@ -35,9 +35,6 @@
                        style="position:absolute; top:-11px; background-color:white; padding-left:8px;">收支分类</label>
                 <nz-form-item>
                     <nz-form-control>
-                        <ef-account-select></ef-account-select>
-                    </nz-form-control>
-                    <nz-form-control>
                         <nz-input-group nzCompact>
                             <nz-select formControlName="inExType" style="width:30%;">
                                 <nz-option [nzLabel]="EnumInExType.INCOME"   [nzValue]="EnumInExType.INCOME"></nz-option>
@@ -67,6 +64,8 @@
                        style="position:absolute; top:-11px; background-color:white; padding-left:8px;">账户</label>
                 <nz-form-item>
                     <nz-form-control>
+                       <ef-account-select formControlName="accounts"></ef-account-select>
+                       <!--
                        <nz-select formControlName="accounts"
                                   nzMode="tags"
                                   nzPlaceHolder="Please select"
@@ -75,6 +74,7 @@
                                 <nz-option *ngFor="let account of acctGroup.accounts" [nzValue]="account.id" [nzLabel]="account.name"></nz-option>
                             </nz-option-group>
                         </nz-select>
+                        -->
                         <nz-form-explain *ngIf="conditionForm.get('accountCondition').dirty && conditionForm.get('accountCondition').invalid">Account Error!</nz-form-explain>
                     </nz-form-control>
                 </nz-form-item>
