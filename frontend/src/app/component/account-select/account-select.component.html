@@ -3,15 +3,20 @@
      (click)="showModal()">
     <nz-tag *ngFor="let account of selectedAccounts">{{account.name}}</nz-tag>
 </div>
-<nz-modal [(nzVisible)]="modalVisible" nzTitle="The first Modal" [nzFooter]="modalFooter">
+<nz-modal [(nzVisible)]="modalVisible" nzTitle="Select Accounts" [nzFooter]="modalFooter" (nzOnCancel)="handleCancel()">
     <div class="ef-accountselect-selection-tags">
         <nz-tag nzMode="closeable" *ngFor="let account of modalSelectedAccounts; index as i;" (nzAfterClose)="deleteTag(account, i)">{{account.name}}</nz-tag>
     </div>
-    <nz-input-group nzSuffixIcon="anticon anticon-search" class="ef-accountselect-selection-search">
-        <input type="text" nz-input placeholder="input search text">
+    <nz-input-group nzSearch [nzSuffix]="suffixSearchIcon" class="ef-accountselect-selection-search">
+        <input #searchInput type="text" nz-input placeholder="input search text" (input)="searchSubject.next(searchInput.value)" >
+        <ng-template #suffixSearchIcon>
+            <button nz-button (click)="searchInput.value=''; searchSubject.next('')" nzSearch>
+                <i [ngClass]="{'anticon-search' : searchInput.value.trim().length == 0, 'anticon-close-circle-o' : searchInput.value.trim().length > 0}" class="anticon"></i>
+            </button>
+        </ng-template>
     </nz-input-group>
     <ul class="ef-accountselect-selection-list">
-        <li class="ef-accountselect-selection-list-item-group" *ngFor="let group of groups">
+        <li class="ef-accountselect-selection-list-item-group" *ngFor="let group of filteredGroups">
             <div class="ef-accountselect-selection-list-item-group-title">{{group.name}}</div>
             <ul class="ef-accountselect-selection-list-item-group-list">
                 <li *ngFor="let account of group.accounts"

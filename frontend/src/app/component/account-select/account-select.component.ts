@@ -1,8 +1,11 @@
 import { Component, OnInit, forwardRef, Input } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { toBoolean } from 'ng-zorro-antd/src/core/util/convert';
+import { Subject, interval } from 'rxjs';
+
 import { AccountService } from '../../service/account.service';
 import { Account } from '../../entity/account.entity';
-import { toBoolean } from 'ng-zorro-antd/src/core/util/convert';
+import { debounceTime, distinctUntilChanged, switchMap, mapTo, map } from 'rxjs/operators';
 
 @Component({
   selector: 'ef-account-select',
@@ -20,19 +23,23 @@ export class AccountSelectComponent implements OnInit, ControlValueAccessor
 {
     private _disabled = false;
 
+    searchSubject = new Subject<string>();
+
     onChange: (value: number[]) => void = () => {};
 
-    groups : InnerAccountGroup[] = []; 
+    groups : InnerAccountGroup[] = [];
+    filteredGroups : InnerAccountGroup[] = [];
+
     modalVisible = false;
 
     selectedAccounts : SelectableAccount[] = [];
     modalSelectedAccounts : SelectableAccount[] = [];
 
-    constructor(private accountService: AccountService) 
+    constructor(private accountService: AccountService)
     {
     }
 
-    ngOnInit() 
+    ngOnInit()
     {
         let accountGroups = this.accountService.getAccountGroups();
         accountGroups.forEach(accountGroup => {
@@ -49,9 +56,14 @@ export class AccountSelectComponent implements OnInit, ControlValueAccessor
                 group.accounts.push(selectableAccount);
             });
         });
+
+        this.filteredGroups = this.groups;
+
+        // delay 400 milliseconds to prevent search frequently
+        this.searchSubject.pipe(debounceTime(400)).subscribe(keyword => this.search(keyword));
     }
 
-    showModal(): void 
+    showModal(): void
     {
         if (this.efDisabled)
         {
@@ -83,7 +95,7 @@ export class AccountSelectComponent implements OnInit, ControlValueAccessor
         }
         else
         {
-            for (let index = 0; index < this.modalSelectedAccounts.length; index++) 
+            for (let index = 0; index < this.modalSelectedAccounts.length; index++)
             {
                 const tmpAccount = this.modalSelectedAccounts[index];
                 if (tmpAccount == account)
@@ -106,8 +118,8 @@ export class AccountSelectComponent implements OnInit, ControlValueAccessor
         this.modalSelectedAccounts.forEach(account => {account.selected = false;});
         this.modalSelectedAccounts = [];
     }
-    
-    handleOk(): void 
+
+    handleOk(): void
     {
         this.selectedAccounts = [];
         this.modalVisible = false;
@@ -120,10 +132,40 @@ export class AccountSelectComponent implements OnInit, ControlValueAccessor
 
         this.onChange(accountIds);
     }
-    
-    handleCancel(): void 
+
+    handleCancel(): void
     {
         this.modalVisible = false;
+    }
+
+    private search(keyword : string) : void
+    {
+        keyword = keyword.trim().toLowerCase();
+        if (keyword.length == 0)
+        {
+            this.filteredGroups = this.groups;
+        }
+        else
+        {
+            this.filteredGroups = [];
+            this.groups.forEach(group => {
+                let filteredGroup : InnerAccountGroup;
+                group.accounts.forEach(account => {
+                    if (account.name.toLowerCase().includes(keyword)
+                        || account.pinyin.toLowerCase().includes(keyword)
+                        || account.acronym.toLowerCase().includes(keyword))
+                    {
+                        if (null == filteredGroup)
+                        {
+                            filteredGroup = {name:group.name, accounts:[]};
+                        }
+                        filteredGroup.accounts.push(account);
+                    }
+                });
+
+                filteredGroup && this.filteredGroups.push(filteredGroup);
+            });
+        }
     }
 
     writeValue(accountIds: number[]): void
@@ -162,12 +204,12 @@ export class AccountSelectComponent implements OnInit, ControlValueAccessor
     }
 
     @Input()
-    set efDisabled(value: boolean) 
+    set efDisabled(value: boolean)
     {
       this._disabled = toBoolean(value);
     }
-  
-    get efDisabled(): boolean 
+
+    get efDisabled(): boolean
     {
       return this._disabled;
     }
