@@ -1,0 +1,9 @@
+<li class="ef-select-selection-list-item-group">
+    <div class="ef-select-selection-list-item-group-title">{{label}}</div>
+    <ul class="ef-select-selection-list-item-group-list">
+        <li *ngFor="let option of options"
+            class="ef-select-selection-list-item"
+            [ngClass]="{'selected' : account.selected, 'no-selected' : !account.selected}"
+            (click)="clickAccount(account)">{{option.label}}</li>
+    </ul>
+</li>
