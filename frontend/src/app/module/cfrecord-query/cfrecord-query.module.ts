@@ -10,6 +10,9 @@ import { QueryConditionsComponent } from './component/query-conditions/query-con
 import { CfRecordQueryService } from './service/cfrecord-query.service';
 import { CfRecordQueryRoutingModule } from './cfrecord-query-routing.module';
 import { AccountSelectComponent } from '../../component/account-select/account-select.component';
+import { EfSelectComponent } from '../../component/ef-select/ef-select.component';
+import { EfOptionDirective } from '../../component/ef-select/ef-option.directive';
+import { EfOptionGroupDirective } from '../../component/ef-select/ef-option-group.directive';
 
 @NgModule({
     declarations: [
@@ -17,7 +20,11 @@ import { AccountSelectComponent } from '../../component/account-select/account-s
         QueryConditionsComponent,
         CfRecordListComponent,
         CfRecordDetailComponent,
-        AccountSelectComponent
+        AccountSelectComponent,
+        EfSelectComponent,
+        EfOptionDirective,
+        EfOptionGroupDirective
+
     ],
     imports: [
         CommonModule,

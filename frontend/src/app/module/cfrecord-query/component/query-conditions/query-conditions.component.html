@@ -65,6 +65,11 @@
                 <nz-form-item>
                     <nz-form-control>
                        <ef-account-select formControlName="accounts"></ef-account-select>
+                       <ef-select>
+                           <ef-option-group *ngFor="let acctGroup of accountGroups" [efLabel]="acctGroup.name">
+                               <ef-option *ngFor="let account of acctGroup.accounts" [efValue]="account.id" [efLabel]="account.name"></ef-option>
+                           </ef-option-group>
+                       </ef-select>
                        <!--
                        <nz-select formControlName="accounts"
                                   nzMode="tags"

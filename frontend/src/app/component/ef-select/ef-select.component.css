@@ -1,4 +1,4 @@
-ef-select-selection
+.ef-select-selection
 {
     padding: 0px 5px;
     line-height: 30px;
@@ -12,37 +12,37 @@ ef-select-selection
     transition: all .3s cubic-bezier(.645, .045, .355, 1);
 }
 
-ef-select-selection.enabled
+.ef-select-selection.enabled
 {
     cursor: pointer;
     background-color: #fff;
 }
 
-ef-select-selection.disabled
+.ef-select-selection.disabled
 {
     cursor: not-allowed;
     background: #f5f5f5;
 }
 
-:host-context(.has-error) ef-select-selection
+:host-context(.has-error) .ef-select-selection
 {
     border-color: #f5222d;
 }
 
-ef-select-selection-tags
+.ef-select-selection-tags
 {
     line-height: 30px;
     max-height: 90px;
     overflow: auto;
 }
 
-ef-select-selection-search
+.ef-select-selection-search
 {
     margin-top: 10px;
     margin-bottom: 15px;
 }
 
-ef-select-selection-list
+.ef-select-selection-list
 {
     margin-bottom: 0;
     padding-left: 0;
@@ -51,7 +51,7 @@ ef-select-selection-list
     overflow: auto;
 }
 
-ef-select-selection-list-item-group-title
+.ef-select-selection-list-item-group-title
 {
     color: rgba(0, 0, 0, .45);
     height: 32px;
@@ -59,7 +59,7 @@ ef-select-selection-list-item-group-title
     font-size: 12px;
 }
 
-ef-select-selection-list-item
+.ef-select-selection-list-item
 {
     padding-left: 20px;
     user-select: none;
@@ -75,7 +75,7 @@ ef-select-selection-list-item
     transition: background .3s ease;
 }
 
-ef-select-selection-list-item:after
+.ef-select-selection-list-item:after
 {
     font-size: 12px;
     font-family: anticon;
@@ -91,33 +91,33 @@ ef-select-selection-list-item:after
     text-shadow: 0 0.1px 0, 0.1px 0 0, 0 -0.1px 0, -0.1px 0;
 }
 
-ef-select-selection-list-item.selected
+.ef-select-selection-list-item.selected
 {
     background-color: #fafafa;
     font-weight: 600;
 }
 
-ef-select-selection-list-item.selected:after
+.ef-select-selection-list-item.selected:after
 {
     color: #1890ff;
 }
 
-ef-select-selection-list-item.no-selected
+.ef-select-selection-list-item.no-selected
 {
     font-weight: 400;
 }
 
-ef-select-selection-list-item.no-selected:hover
+.ef-select-selection-list-item.no-selected:hover
 {
     background-color: #e6f7ff;
 }
 
-ef-select-selection-list-item.no-selected:hover:after
+.ef-select-selection-list-item.no-selected:hover:after
 {
     color:#ddd
 }
 
-ef-select-selection-list-item-group-list
+.ef-select-selection-list-item-group-list
 {
     margin: 0;
     padding: 0;
