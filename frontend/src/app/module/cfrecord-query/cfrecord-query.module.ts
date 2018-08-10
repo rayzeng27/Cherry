@@ -10,7 +10,7 @@ import { QueryConditionsComponent } from './component/query-conditions/query-con
 import { CfRecordQueryService } from './service/cfrecord-query.service';
 import { CfRecordQueryRoutingModule } from './cfrecord-query-routing.module';
 import { AccountSelectComponent } from '../../component/account-select/account-select.component';
-import { EfSelectComponent } from '../../component/ef-select/ef-select.component';
+import { EfSelectComponent, EfOptionPipe, EfOptionGroupPipe } from '../../component/ef-select/ef-select.component';
 import { EfOptionDirective } from '../../component/ef-select/ef-option.directive';
 import { EfOptionGroupDirective } from '../../component/ef-select/ef-option-group.directive';
 
@@ -23,8 +23,9 @@ import { EfOptionGroupDirective } from '../../component/ef-select/ef-option-grou
         AccountSelectComponent,
         EfSelectComponent,
         EfOptionDirective,
-        EfOptionGroupDirective
-
+        EfOptionGroupDirective,
+        EfOptionPipe,
+        EfOptionGroupPipe
     ],
     imports: [
         CommonModule,

@@ -1,8 +1,7 @@
-export class Tag
+import { Searchable } from "./searchable.entity";
+
+export class Tag extends Searchable
 {
     id : number;
-    name : string;
     date : string;
-    pinyin : string;
-    acronym : string;
 }

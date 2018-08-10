@@ -16,10 +16,10 @@
         </ng-template>
     </nz-input-group>
     <ul class="ef-select-selection-list">
-        <li class="ef-select-selection-list-item-group" *ngFor="let group of optionGroups">
+        <li class="ef-select-selection-list-item-group" *ngFor="let group of optionGroups | efOptionGroupFilter : searchKeywrod">
             <div class="ef-select-selection-list-item-group-title">{{group.efLabel}}</div>
             <ul class="ef-select-selection-list-item-group-list">
-                <li *ngFor="let option of group.options"
+                <li *ngFor="let option of group.options | efOptionFilter : searchKeywrod"
                     class="ef-select-selection-list-item"
                     [ngClass]="{'selected' : option.selected, 'no-selected' : !option.selected}"
                     (click)="toggleOption(option)">{{option.efLabel}}</li>

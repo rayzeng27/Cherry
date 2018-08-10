@@ -1,13 +1,12 @@
-export class Account
+import { Searchable } from "./searchable.entity";
+
+export class Account extends Searchable
 {
     id : number;
     groupId : number;
     issuerId : number;
     ownerId : number;
-    name : string;
     status : string;
-    pinyin : string;
-    acronym : string;
 }
 
 export class AccountGroup

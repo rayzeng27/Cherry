@@ -1,4 +1,4 @@
-import { Component, OnInit, forwardRef, Input, ContentChildren, QueryList } from '@angular/core';
+import { Component, OnInit, forwardRef, Input, ContentChildren, QueryList, Pipe, PipeTransform, AfterContentInit } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
@@ -6,6 +6,7 @@ import { toBoolean } from 'ng-zorro-antd/src/core/util/convert';
 
 import { EfOptionGroupDirective } from './ef-option-group.directive';
 import { EfOptionDirective } from './ef-option.directive';
+import { Searchable } from '../../entity/searchable.entity';
 
 @Component({
   selector: 'ef-select',
@@ -19,15 +20,17 @@ import { EfOptionDirective } from './ef-option.directive';
   templateUrl: './ef-select.component.html',
   styleUrls: ['./ef-select.component.css']
 })
-export class EfSelectComponent implements OnInit, ControlValueAccessor
+export class EfSelectComponent implements OnInit, AfterContentInit, ControlValueAccessor
 {
     @ContentChildren(EfOptionGroupDirective)
     optionGroups : QueryList<EfOptionGroupDirective>;
 
     private _disabled = false;
-    private onChange: (value: any[]) => void = () => {};
+    private onChange: (values : any[]) => void = () => {};
+    private _initValues = null;
 
     searchSubject = new Subject<string>();
+    searchKeywrod : string = '';
 
     modalVisible = false;
 
@@ -37,7 +40,13 @@ export class EfSelectComponent implements OnInit, ControlValueAccessor
     ngOnInit(): void
     {
         // delay 400 milliseconds to prevent search frequently
-        this.searchSubject.pipe(debounceTime(400)).subscribe(keyword => this.search(keyword));
+        this.searchSubject.pipe(debounceTime(400)).subscribe(keyword => this.searchKeywrod = keyword.trim().toLowerCase());
+    }
+
+    ngAfterContentInit(): void
+    {
+        // when calling writeValue() first time, contentChildren 'optionGroups' doesn't init yet, so call writeValue() again.
+        this._initValues && this.writeValue(this._initValues);
     }
 
     showModal(): void
@@ -115,41 +124,33 @@ export class EfSelectComponent implements OnInit, ControlValueAccessor
         this.modalVisible = false;
     }
 
-    private search(keyword : string) : void
+    writeValue(values: any[]): void
     {
-        keyword = keyword.trim().toLowerCase();
-        // if (keyword.length == 0)
-        // {
-        //     this.filteredGroups = this.groups;
-        // }
-        // else
-        // {
-        //     this.filteredGroups = [];
-        //     this.groups.forEach(group => {
-        //         let filteredGroup : InnerAccountGroup;
-        //         group.accounts.forEach(account => {
-        //             if (account.name.toLowerCase().includes(keyword)
-        //                 || account.pinyin.toLowerCase().includes(keyword)
-        //                 || account.acronym.toLowerCase().includes(keyword))
-        //             {
-        //                 if (null == filteredGroup)
-        //                 {
-        //                     filteredGroup = {name:group.name, accounts:[]};
-        //                 }
-        //                 filteredGroup.accounts.push(account);
-        //             }
-        //         });
+        if (null == this.optionGroups)
+        {
+            // ContentChildren 'optionGroups' doesn't init yet, delay calling in method ngAfterContentInit()
+            this._initValues = values;
+            return;
+        }
+        
+        this.selectedOptions = [];
 
-        //         filteredGroup && this.filteredGroups.push(filteredGroup);
-        //     });
-        // }
+        if (null == values || 0 == values.length)
+        {
+            return;
+        }
+
+        this.optionGroups.forEach(group => {
+            group.options.forEach(option => {
+                if (values.includes(option.efValue))
+                {
+                    this.selectedOptions.push({label : option.efLabel, value : option.efValue});
+                }
+            });
+        });
     }
 
-    writeValue(accountIds: number[]): void
-    {
-    }
-
-    registerOnChange(fn: (value: any[]) => void): void
+    registerOnChange(fn: (values : any[]) => void): void
     {
         this.onChange = fn;
     }
@@ -179,4 +180,29 @@ class InnerOption
 {
     label : string;
     value : any;
+}
+
+let filterFn = function(keyword : string, searchable : Searchable) : boolean
+{
+    return searchable.name.toLowerCase().includes(keyword)
+        || searchable.pinyin.toLowerCase().includes(keyword)
+        || searchable.acronym.toLowerCase().includes(keyword);
+};
+
+@Pipe({ name: 'efOptionFilter' })
+export class EfOptionPipe implements PipeTransform
+{
+    transform(options: EfOptionDirective[], keyword: string): EfOptionDirective[]
+    {
+        return options.filter(o => filterFn(keyword, o.efSearchable));
+    }
+}
+
+@Pipe({ name: 'efOptionGroupFilter' })
+export class EfOptionGroupPipe implements PipeTransform
+{
+    transform(groups: EfOptionGroupDirective[], keyword: string): EfOptionGroupDirective[]
+    {
+        return groups.filter(g => { return g.options.some(o => filterFn(keyword, o.efSearchable)); });
+    }
 }

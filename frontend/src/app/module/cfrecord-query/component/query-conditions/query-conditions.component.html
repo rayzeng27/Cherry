@@ -64,22 +64,11 @@
                        style="position:absolute; top:-11px; background-color:white; padding-left:8px;">账户</label>
                 <nz-form-item>
                     <nz-form-control>
-                       <ef-account-select formControlName="accounts"></ef-account-select>
-                       <ef-select>
+                       <ef-select formControlName="accounts">
                            <ef-option-group *ngFor="let acctGroup of accountGroups" [efLabel]="acctGroup.name">
-                               <ef-option *ngFor="let account of acctGroup.accounts" [efValue]="account.id" [efLabel]="account.name"></ef-option>
+                               <ef-option *ngFor="let account of acctGroup.accounts" [efValue]="account.id" [efLabel]="account.name" [efSearchable]="account"></ef-option>
                            </ef-option-group>
                        </ef-select>
-                       <!--
-                       <nz-select formControlName="accounts"
-                                  nzMode="tags"
-                                  nzPlaceHolder="Please select"
-                                  style="width:100%;">
-                            <nz-option-group *ngFor="let acctGroup of accountGroups" [nzLabel]="acctGroup.name">
-                                <nz-option *ngFor="let account of acctGroup.accounts" [nzValue]="account.id" [nzLabel]="account.name"></nz-option>
-                            </nz-option-group>
-                        </nz-select>
-                        -->
                         <nz-form-explain *ngIf="conditionForm.get('accountCondition').dirty && conditionForm.get('accountCondition').invalid">Account Error!</nz-form-explain>
                     </nz-form-control>
                 </nz-form-item>

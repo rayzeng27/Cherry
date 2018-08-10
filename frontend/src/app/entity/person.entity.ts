@@ -1,8 +1,7 @@
-export class Person
+import { Searchable } from "./searchable.entity";
+
+export class Person extends Searchable
 {
     id : number;
-    name : string;
     host : boolean;
-    pinyin : string;
-    acronym : string;
 }

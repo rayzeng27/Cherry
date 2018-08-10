@@ -1,13 +1,11 @@
 import { EnumInExType } from "../enum/inex-type.enum";
+import { Searchable } from "./searchable.entity";
 
-export class InExCategory
+export class InExCategory extends Searchable
 {
     id : number;
     groupId : number;
-    name : string;
     inExType : EnumInExType;
-    pinyin : string;
-    acronym : string;
 }
 
 export class InExGroup
