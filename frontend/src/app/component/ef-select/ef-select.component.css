@@ -1,4 +1,4 @@
-.ef-select-selection
+.ef-select__field
 {
     padding: 0px 5px;
     line-height: 30px;
@@ -12,37 +12,37 @@
     transition: all .3s cubic-bezier(.645, .045, .355, 1);
 }
 
-.ef-select-selection.enabled
+.ef-select__field.enabled
 {
     cursor: pointer;
     background-color: #fff;
 }
 
-.ef-select-selection.disabled
+.ef-select__field.disabled
 {
     cursor: not-allowed;
     background: #f5f5f5;
 }
 
-:host-context(.has-error) .ef-select-selection
+:host-context(.has-error) .ef-select__field
 {
     border-color: #f5222d;
 }
 
-.ef-select-selection-tags
+.ef-select__modal__selected-tags
 {
     line-height: 30px;
     max-height: 90px;
     overflow: auto;
 }
 
-.ef-select-selection-search
+.ef-select__modal__search-box
 {
     margin-top: 10px;
     margin-bottom: 15px;
 }
 
-.ef-select-selection-list
+.ef-select__modal__options
 {
     margin-bottom: 0;
     padding-left: 0;
@@ -51,7 +51,7 @@
     overflow: auto;
 }
 
-.ef-select-selection-list-item-group-title
+.ef-select__modal__option-group--title
 {
     color: rgba(0, 0, 0, .45);
     height: 32px;
@@ -59,7 +59,13 @@
     font-size: 12px;
 }
 
-.ef-select-selection-list-item
+.ef-select__modal__option-group--options
+{
+    margin: 0;
+    padding: 0;
+}
+
+.ef-select__modal__option
 {
     padding-left: 20px;
     user-select: none;
@@ -75,7 +81,7 @@
     transition: background .3s ease;
 }
 
-.ef-select-selection-list-item:after
+.ef-select__modal__option:after
 {
     font-size: 12px;
     font-family: anticon;
@@ -91,34 +97,28 @@
     text-shadow: 0 0.1px 0, 0.1px 0 0, 0 -0.1px 0, -0.1px 0;
 }
 
-.ef-select-selection-list-item.selected
+.ef-select__modal__option.selected
 {
     background-color: #fafafa;
     font-weight: 600;
 }
 
-.ef-select-selection-list-item.selected:after
+.ef-select__modal__option.selected:after
 {
     color: #1890ff;
 }
 
-.ef-select-selection-list-item.no-selected
+.ef-select__modal__option.not-selected
 {
     font-weight: 400;
 }
 
-.ef-select-selection-list-item.no-selected:hover
+.ef-select__modal__option.not-selected:hover
 {
     background-color: #e6f7ff;
 }
 
-.ef-select-selection-list-item.no-selected:hover:after
+.ef-select__modal__option.not-selected:hover:after
 {
     color:#ddd
-}
-
-.ef-select-selection-list-item-group-list
-{
-    margin: 0;
-    padding: 0;
 }

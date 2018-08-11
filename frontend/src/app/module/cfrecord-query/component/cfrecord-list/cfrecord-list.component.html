@@ -8,7 +8,7 @@
                             <tr>
                                 <td style="padding:0px 3px; border:none;">{{cfRecordVO.recordDateTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
                                 <td style="padding:0px 3px; border:none;" class="align-right money" rowspan="2">{{cfRecordVO.localMoney | number:'1.2-2'}}</td>
-                                <td style="padding:0px 3px; border:none; width:24px; font-size:20px;" rowspan="2"><a routerLink="../detail/{{cfRecordVO.id}}"><i class="anticon anticon-right-circle-o"></i></a></td>
+                                <td style="padding:0px 3px; border:none; width:24px; font-size:30px;" rowspan="2"><a routerLink="../detail/{{cfRecordVO.id}}"><i class="anticon anticon-right-circle-o"></i></a></td>
                             </tr>
                             <tr [ngSwitch]="cfRecordVO.inExType">
                                 <td *ngSwitchCase="EnumInExType.INCOME"   style="padding:0px 3px; border:none;"><span class="account">{{cfRecordVO.flowInAccountName}}  <nz-tag nzColor="green">{{cfRecordVO.inExCategoryName}}</nz-tag></span></td>

@@ -1,4 +1,4 @@
-<form [formGroup]="conditionForm" (ngSubmit)="query()" style="padding-bottom:60px;">
+<form [formGroup]="conditionForm" (ngSubmit)="query()" style="padding:0px 10px 60px 10px;">
     <div nz-row>
         <div nz-col nzSpan="24">
             <nz-card formGroupName="moneyCondition" [nzBodyStyle]="{'padding-top' : '0px', 'padding-bottom' : '0px'}">
@@ -35,20 +35,28 @@
                        style="position:absolute; top:-11px; background-color:white; padding-left:8px;">收支分类</label>
                 <nz-form-item>
                     <nz-form-control>
-                        <nz-input-group nzCompact>
-                            <nz-select formControlName="inExType" style="width:30%;">
-                                <nz-option [nzLabel]="EnumInExType.INCOME"   [nzValue]="EnumInExType.INCOME"></nz-option>
-                                <nz-option [nzLabel]="EnumInExType.EXPENSES" [nzValue]="EnumInExType.EXPENSES"></nz-option>
-                            </nz-select>
-                            <nz-select formControlName="inExCategories"
-                                       nzMode="tags"
-                                       nzPlaceHolder="Please select"
-                                       style="width:70%;">
-                                <nz-option-group *ngFor="let categoryGroup of categoryGroup" [nzLabel]="categoryGroup.name">
-                                    <nz-option *ngFor="let category of categoryGroup.categories" [nzValue]="category.id" [nzLabel]="category.name"></nz-option>
-                                </nz-option-group>
-                            </nz-select>
-                        </nz-input-group>
+                        <nz-radio-group formControlName="inExType">
+                            <label nz-radio [nzValue]="EnumInExType.INCOME">{{EnumInExType.INCOME}}</label>
+                            <label nz-radio [nzValue]="EnumInExType.EXPENSES">{{EnumInExType.EXPENSES}}</label>
+                        </nz-radio-group>
+                        <ef-select formControlName="inExCategories" modalTitle="Select Income Categories" *ngIf="conditionForm.get('inExCondition.inExType').value == EnumInExType.INCOME">
+                            <ef-option-group *ngFor="let categoryGroup of inCategoryGroups" [efLabel]="categoryGroup.name">
+                                <ef-option *ngFor="let category of categoryGroup.categories" [efValue]="category.id" [efLabel]="category.name" [efSearchable]="category"></ef-option>
+                            </ef-option-group>
+                        </ef-select>
+                        <ef-select formControlName="inExCategories" modalTitle="Select Expenses Categories" *ngIf="conditionForm.get('inExCondition.inExType').value == EnumInExType.EXPENSES">
+                            <ef-option-group *ngFor="let categoryGroup of exCategoryGroups" [efLabel]="categoryGroup.name">
+                                <ef-option *ngFor="let category of categoryGroup.categories" [efValue]="category.id" [efLabel]="category.name" [efSearchable]="category"></ef-option>
+                            </ef-option-group>
+                        </ef-select>
+                        <!-- <nz-select formControlName="inExCategories"
+                                   nzMode="tags"
+                                   nzPlaceHolder="Please select"
+                        style="width:70%;">
+                 <nz-option-group *ngFor="let categoryGroup of categoryGroup" [nzLabel]="categoryGroup.name">
+                     <nz-option *ngFor="let category of categoryGroup.categories" [nzValue]="category.id" [nzLabel]="category.name"></nz-option>
+                 </nz-option-group>
+             </nz-select> -->
                         <nz-form-explain *ngIf="conditionForm.get('inExCondition').dirty && conditionForm.get('inExCondition').invalid">InEx Error!</nz-form-explain>
                     </nz-form-control>
                 </nz-form-item>
@@ -64,7 +72,7 @@
                        style="position:absolute; top:-11px; background-color:white; padding-left:8px;">账户</label>
                 <nz-form-item>
                     <nz-form-control>
-                       <ef-select formControlName="accounts">
+                       <ef-select formControlName="accounts" modalTitle="Select Accounts">
                            <ef-option-group *ngFor="let acctGroup of accountGroups" [efLabel]="acctGroup.name">
                                <ef-option *ngFor="let account of acctGroup.accounts" [efValue]="account.id" [efLabel]="account.name" [efSearchable]="account"></ef-option>
                            </ef-option-group>
@@ -84,12 +92,9 @@
                        style="position:absolute; top:-11px; background-color:white; padding-left:8px;">标签</label>
                 <nz-form-item>
                     <nz-form-control>
-                        <nz-select formControlName="tags"
-                                   nzMode="tags"
-                                   nzPlaceHolder="Please select"
-                                   style="width:100%;">
-                            <nz-option *ngFor="let tag of tags" [nzValue]="tag.id" [nzLabel]="'[' + tag.date + ']' + tag.name"></nz-option>
-                        </nz-select>
+                        <ef-select formControlName="tags" modalTitle="Select Tags">
+                            <ef-option *ngFor="let tag of tags" [efValue]="tag.id" [efLabel]="'[' + tag.date + ']' + tag.name" [efSearchable]="tag"></ef-option>
+                        </ef-select>
                         <nz-form-explain *ngIf="conditionForm.get('tagCondition').dirty && conditionForm.get('tagCondition').invalid">Tag Error!</nz-form-explain>
                     </nz-form-control>
                 </nz-form-item>
@@ -125,12 +130,9 @@
                        style="position:absolute; top:-11px; background-color:white; padding-left:8px;">归属人员</label>
                 <nz-form-item>
                     <nz-form-control>
-                        <nz-select formControlName="owners"
-                                   nzMode="tags"
-                                   nzPlaceHolder="Please select"
-                                   style="width:100%;">
-                            <nz-option *ngFor="let person of persons" [nzValue]="person.id" [nzLabel]="person.name"></nz-option>
-                        </nz-select>
+                        <ef-select formControlName="owners" modalTitle="Select Owners">
+                            <ef-option *ngFor="let person of persons" [efValue]="person.id" [efLabel]="person.name" [efSearchable]="person"></ef-option>
+                        </ef-select>
                         <nz-form-explain *ngIf="conditionForm.get('ownerCondition').dirty && conditionForm.get('ownerCondition').invalid">Owner Error!</nz-form-explain>
                     </nz-form-control>
                 </nz-form-item>

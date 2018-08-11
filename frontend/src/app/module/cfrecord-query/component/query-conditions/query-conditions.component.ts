@@ -30,9 +30,8 @@ export class QueryConditionsComponent implements OnInit
 
     private tags : Tag[] = [];
 
-    private categoryGroup : InExGroup[] = [];
-    private inCategoryGroup : InExGroup[] = [];
-    private exCategoryGroup : InExGroup[] = [];
+    private inCategoryGroups : InExGroup[] = [];
+    private exCategoryGroups : InExGroup[] = [];
 
     private conditionForm : FormGroup;
 
@@ -90,8 +89,8 @@ export class QueryConditionsComponent implements OnInit
         this.initOwnerConditionUI();
         this.initRemarkConditionUI();
 
-        this.inCategoryGroup = this.inExCategoryService.getInExGroups(EnumInExType.INCOME);
-        this.exCategoryGroup = this.inExCategoryService.getInExGroups(EnumInExType.EXPENSES);
+        this.inCategoryGroups = this.inExCategoryService.getInExGroups(EnumInExType.INCOME);
+        this.exCategoryGroups = this.inExCategoryService.getInExGroups(EnumInExType.EXPENSES);
         this.accountGroups = this.accountService.getAccountGroups();
         this.persons = this.personService.getPersons();
         this.tags = this.tagService.getTags();
@@ -179,22 +178,8 @@ export class QueryConditionsComponent implements OnInit
         });
 
         inExTypeControl.valueChanges.subscribe((inExType : EnumInExType) =>{
-            switch(inExType)
-            {
-                case EnumInExType.INCOME:
-                {
-                    this.categoryGroup = this.inCategoryGroup;
-                    break;
-                }
-                case EnumInExType.EXPENSES:
-                {
-                    this.categoryGroup = this.exCategoryGroup;
-                    break;
-                }
-            }
             inExCategoriesControl.setValue([]);
         });
-        this.categoryGroup = this.exCategoryGroup;
     }
 
     private initAccountConditionUI() : void

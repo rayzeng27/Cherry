@@ -1,30 +1,34 @@
-<div class="ef-select-selection"
+<div class="ef-select__field"
      [ngClass]="{'enabled' : !efDisabled, 'disabled' : efDisabled}"
      (click)="showModal()">
     <nz-tag *ngFor="let option of selectedOptions">{{option.label}}</nz-tag>
 </div>
-<nz-modal [(nzVisible)]="modalVisible" nzTitle="Select Accounts" [nzFooter]="modalFooter" (nzOnCancel)="handleCancel()">
-    <div class="ef-select-selection-tags">
+<nz-modal [(nzVisible)]="modalVisible" [nzStyle]="{ top: '20px' }" [nzTitle]="modalTitle" [nzFooter]="modalFooter" (nzOnCancel)="handleCancel()">
+    <div class="ef-select__modal__selected-tags">
         <nz-tag nzMode="closeable" *ngFor="let option of modalSelectedOptions; index as i;" (nzAfterClose)="deselectOption(option, i)">{{option.efLabel}}</nz-tag>
     </div>
-    <nz-input-group nzSearch [nzSuffix]="suffixSearchIcon" class="ef-select-selection-search">
+    <nz-input-group nzSearch [nzSuffix]="suffixSearchIcon" class="ef-select__modal__search-box">
         <input #searchInput type="text" nz-input placeholder="input search text" (input)="searchSubject.next(searchInput.value)" >
         <ng-template #suffixSearchIcon>
-            <button nz-button (click)="searchInput.value=''; searchSubject.next('')" nzSearch>
+            <button nz-button nzSearch (click)="searchInput.value=''; searchSubject.next('')">
                 <i [ngClass]="{'anticon-search' : searchInput.value.trim().length == 0, 'anticon-close-circle-o' : searchInput.value.trim().length > 0}" class="anticon"></i>
             </button>
         </ng-template>
     </nz-input-group>
-    <ul class="ef-select-selection-list">
-        <li class="ef-select-selection-list-item-group" *ngFor="let group of optionGroups | efOptionGroupFilter : searchKeywrod">
-            <div class="ef-select-selection-list-item-group-title">{{group.efLabel}}</div>
-            <ul class="ef-select-selection-list-item-group-list">
+    <ul class="ef-select__modal__options">
+        <li class="ef-select__modal__option-group" *ngFor="let group of optionGroups | efOptionGroupFilter : searchKeywrod">
+            <div class="ef-select__modal__option-group--title">{{group.efLabel}}</div>
+            <ul class="ef-select__modal__option-group--options">
                 <li *ngFor="let option of group.options | efOptionFilter : searchKeywrod"
-                    class="ef-select-selection-list-item"
-                    [ngClass]="{'selected' : option.selected, 'no-selected' : !option.selected}"
+                    class="ef-select__modal__option"
+                    [ngClass]="{'selected' : option.selected, 'not-selected' : !option.selected}"
                     (click)="toggleOption(option)">{{option.efLabel}}</li>
             </ul>
         </li>
+        <li *ngFor="let option of options | efOptionFilter : searchKeywrod"
+            class="ef-select__modal__option"
+            [ngClass]="{'selected' : option.selected, 'not-selected' : !option.selected}"
+            (click)="toggleOption(option)">{{option.efLabel}}</li>
     </ul>
     <ng-template #modalFooter>
         <button nz-button nzType="default" (click)="deselectAllOptions()">Deselect All</button>

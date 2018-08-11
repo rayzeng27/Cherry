@@ -20,7 +20,6 @@ import { EfOptionGroupDirective } from '../../component/ef-select/ef-option-grou
         QueryConditionsComponent,
         CfRecordListComponent,
         CfRecordDetailComponent,
-        AccountSelectComponent,
         EfSelectComponent,
         EfOptionDirective,
         EfOptionGroupDirective,

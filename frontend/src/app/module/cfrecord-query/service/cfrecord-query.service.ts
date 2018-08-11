@@ -295,7 +295,7 @@ export class CfRecordQueryService
         }
 
         // tag
-        if (cfRecordVO.tagIdList.length > 0)
+        if (cfRecordVO.tagIdList && cfRecordVO.tagIdList.length > 0)
         {
             cfRecordVO.tagNames = [];
 

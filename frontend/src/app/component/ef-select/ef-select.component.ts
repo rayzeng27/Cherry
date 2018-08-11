@@ -25,6 +25,12 @@ export class EfSelectComponent implements OnInit, AfterContentInit, ControlValue
     @ContentChildren(EfOptionGroupDirective)
     optionGroups : QueryList<EfOptionGroupDirective>;
 
+    @ContentChildren(EfOptionDirective)
+    options : QueryList<EfOptionDirective>;
+
+    @Input()
+    modalTitle : string = "Select";
+
     private _disabled = false;
     private onChange: (values : any[]) => void = () => {};
     private _initValues = null;
@@ -45,7 +51,7 @@ export class EfSelectComponent implements OnInit, AfterContentInit, ControlValue
 
     ngAfterContentInit(): void
     {
-        // when calling writeValue() first time, contentChildren 'optionGroups' doesn't init yet, so call writeValue() again.
+        // when calling writeValue() first time, contentChildren 'optionGroups' doesn't exist yet, so call writeValue() again here.
         this._initValues && this.writeValue(this._initValues);
     }
 
@@ -68,6 +74,10 @@ export class EfSelectComponent implements OnInit, AfterContentInit, ControlValue
             });
         });
 
+        this.options.forEach(option => {
+            option.selected = values.includes(option.efValue);
+            option.selected && this.modalSelectedOptions.push(option);
+        });
 
         this.modalVisible = true;
     }
@@ -128,7 +138,7 @@ export class EfSelectComponent implements OnInit, AfterContentInit, ControlValue
     {
         if (null == this.optionGroups)
         {
-            // ContentChildren 'optionGroups' doesn't init yet, delay calling in method ngAfterContentInit()
+            // ContentChildren 'optionGroups' doesn't exist yet, delay calling in method ngAfterContentInit()
             this._initValues = values;
             return;
         }
@@ -147,6 +157,13 @@ export class EfSelectComponent implements OnInit, AfterContentInit, ControlValue
                     this.selectedOptions.push({label : option.efLabel, value : option.efValue});
                 }
             });
+        });
+
+        this.options.forEach(option => {
+            if (values.includes(option.efValue))
+            {
+                this.selectedOptions.push({label : option.efLabel, value : option.efValue});
+            }
         });
     }
 
